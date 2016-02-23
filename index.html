@@ -1,0 +1,35 @@
+<html>
+    <head>
+
+        <title>duedate</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+        <script src="duedate.js"></script>
+        <script src="controller.js"></script>
+        <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+
+    </head>
+    <body>
+
+        <div id="authorize-div" style="display: none">
+            <span>Authorize access to Google Tasks API</span>
+            <button id="authorize-button" onclick="duedate.handleAuthClick(event)">Authorize</button>
+        </div>
+
+        <div id="app-div" style="display: none" ng-controller="tasklistCtrl">
+
+            <ul>
+                <li ng-repeat="tasklist in tasklists">
+                    <span>{{tasklist.title}}</span>
+                    <button ng-click="tasklistDelete(tasklist.id)">delete</button>
+                </li>
+            </ul>
+
+            <form ng-submit="tasklistAdd(tasklistInput)">
+                <input ng-model="tasklistInput" placeholder="Add new tasklist">
+            </form>
+
+        </div>
+
+    </body>
+</html>
