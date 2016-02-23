@@ -3,6 +3,8 @@
 
         <title>duedate</title>
 
+        <link rel="stylesheet" href="style.css">
+
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
         <script src="duedate.js"></script>
         <script src="controller.js"></script>
@@ -18,16 +20,32 @@
 
         <div id="app-div" style="display: none" ng-controller="tasklistCtrl">
 
-            <ul>
-                <li ng-repeat="tasklist in tasklists">
-                    <span>{{tasklist.title}}</span>
-                    <button ng-click="tasklistDelete(tasklist.id)">delete</button>
-                </li>
-            </ul>
+            <div id="tasklists">
 
-            <form ng-submit="tasklistAdd(tasklistInput)">
-                <input ng-model="tasklistInput" placeholder="Add new tasklist">
-            </form>
+                <ul>
+                    <li ng-repeat="(id, tasklist) in tasklists">
+                        <span>{{tasklist.title}}</span>
+                        <button ng-click="tasklistDelete(id)">delete</button>
+                    </li>
+                </ul>
+
+                <form ng-submit="tasklistAdd(tasklistInput)">
+                    <input ng-model="tasklistInput" placeholder="Add new tasklist">
+                </form>
+
+            </div>
+
+            <div id="tasks">
+
+                tasks
+
+            </div>
+
+            <div id="task-info">
+
+                task info
+
+            </div>
 
         </div>
 
