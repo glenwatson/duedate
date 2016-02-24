@@ -1,18 +1,2 @@
 body {
 }
-
-#app-div {
-    display: flex;
-}
-
-#tasklists {
-    flex-grow: 1;
-}
-
-#tasks {
-    flex-grow: 1;
-}
-
-#task-info {
-    flex-grow: 1;
-}
