@@ -1,2 +1,17 @@
 body {
 }
+
+.page-header {
+    text-align: center;
+}
+
+#app-div {
+    margin: 25px 0;
+}
+
+.footer {
+    text-align: center;
+    padding-top: 20px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
+}
