@@ -1,6 +1,10 @@
 body {
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .page-header {
     text-align: center;
 }
