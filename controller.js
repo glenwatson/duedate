@@ -59,14 +59,13 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     };
 
     $scope.tasklistDelete = function(tasklistID) {
-        console.log(tasklistID);
         $window.gapi.client.request({
             path: '/tasks/v1/users/@me/lists/' + tasklistID,
             method: 'DELETE',
             callback: function(resp) {
                 if (!resp) {
-                    index = $scope.tasklists.findIndex(function(e, i) {if (e.id == tasklistID) return i;});
-                    $scope.tasklists.splice(index, 1);
+                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
+                    $scope.tasklists.splice(tasklistIndex, 1);
                 } else {
                     console.log(resp);
                 }
@@ -75,8 +74,6 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     };
 
     $scope.taskDelete = function(tasklistID, taskID) {
-        console.log(tasklistID);
-        console.log(taskID);
         $window.gapi.client.request({
             path: '/tasks/v1/lists/' + tasklistID + '/tasks/' + taskID,
             method: 'DELETE',
