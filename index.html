@@ -19,36 +19,47 @@
     </head>
     <body>
 
-        <div id="authorize-div" style="display: none">
-            <span>Authorize access to Google Tasks API</span>
-            <button id="authorize-button" onclick="duedate.handleAuthClick(event)">Authorize</button>
-        </div>
+        <div class="container">
+            <div class="page-header">
+                <h1>duedate</h1>
+            </div>
 
-        <div id="app-div" class="container" style="display: none" ng-controller="tasklistCtrl">
+            <div id="authorize-div" style="display: none">
+                <span>Authorize access to Google Tasks API</span>
+                <button id="authorize-button" onclick="duedate.handleAuthClick(event)">Authorize</button>
+            </div>
 
-            <div class="row">
+            <div id="app-div" style="display: none" ng-controller="tasklistCtrl">
 
-                <div id="tasklists" class="col-md-4">
+                <div class="row">
 
-                    <div class="list-group" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist=''">
-                        <button class="list-group-item" ng-class="{active: data.selectedTasklist=='all'}" ng-click="data.selectedTasklist='all'">all</button>
-                        <button class="list-group-item" ng-class="{active: data.selectedTasklist==tasklist.id}" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists">
-                            {{tasklist.title}}
-                        </button>
+                    <div id="tasklists" class="col-md-4">
+
+                        <div class="list-group" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist=''">
+                            <button class="list-group-item" ng-class="{active: data.selectedTasklist=='all'}" ng-click="data.selectedTasklist='all'">all</button>
+                            <button class="list-group-item" ng-class="{active: data.selectedTasklist==tasklist.id}" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists">
+                                {{tasklist.title}}
+                            </button>
+                        </div>
+
+                        <form ng-submit="tasklistAdd(tasklistInput)">
+                            <input ng-model="tasklistInput" placeholder="Add new tasklist">
+                        </form>
+
                     </div>
 
-                    <form ng-submit="tasklistAdd(tasklistInput)">
-                        <input ng-model="tasklistInput" placeholder="Add new tasklist">
-                    </form>
+                    <div id="tasks" class="col-md-8">
 
-                </div>
+                        <div class="list-group" ng-model="data.selectedTask" ng-init="data.selectedTask=''" ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
+                            <button class="list-group-item" ng-class="{active: data.selectedTask==task.id}" ng-click="data.selectedTask=task.id" ng-repeat="task in tasklist.tasks">
+                                {{task.title}}
+                            </button>
+                        </div>
 
-                <div id="tasks" class="col-md-8">
+                        <form ng-submit="taskAdd(taskInput, data.selectedTasklist)" ng-if="data.selectedTasklist">
+                            <input ng-model="taskInput" placeholder="Add new task">
+                        </form>
 
-                    <div class="list-group" ng-model="data.selectedTask" ng-init="data.selectedTask=''" ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
-                        <button class="list-group-item" ng-class="{active: data.selectedTask==task.id}" ng-click="data.selectedTask=task.id" ng-repeat="task in tasklist.tasks">
-                            {{task.title}}
-                        </button>
                     </div>
 
                 </div>
