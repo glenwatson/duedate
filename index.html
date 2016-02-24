@@ -59,6 +59,7 @@
                             <div ng-model="data.selectedTask" ng-init="data.selectedTask=''" ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
                                 <button class="list-group-item" ng-class="{active: data.selectedTask==task.id}" ng-click="data.selectedTask=task.id" ng-repeat="task in tasklist.tasks">
                                     {{task.title}}
+                                    <span class="badge btn" ng-click="taskDelete(data.selectedTasklist, task.id)">delete</span>
                                 </button>
                             </div>
                         </div>
