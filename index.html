@@ -22,12 +22,10 @@
 
             <div id="tasklists">
 
-                <ul>
-                    <li ng-repeat="(id, tasklist) in tasklists">
-                        <span>{{tasklist.title}}</span>
-                        <button ng-click="tasklistDelete(id)">delete</button>
-                    </li>
-                </ul>
+                <select size="20" ng-model="selectedTasklist" ng-init="selectedTasklist='all'">
+                    <option value="all" ng-selected="true">all</option>
+                    <option ng-repeat="tasklist in tasklists" value="{{tasklist.id}}">{{tasklist.title}}</option>
+                </select>
 
                 <form ng-submit="tasklistAdd(tasklistInput)">
                     <input ng-model="tasklistInput" placeholder="Add new tasklist">
@@ -37,7 +35,9 @@
 
             <div id="tasks">
 
-                tasks
+                <select size="20" ng-repeat="tasklist in tasklists" ng-if="tasklist.id==selectedTasklist" ng-model="selectedTask" ng-init="selectedTask=tasklist.tasks[0].id">
+                    <option ng-repeat="task in tasklist.tasks" value="{{task.id}}" ng-selected="$first">{{task.title}}</option>
+                </select>
 
             </div>
 

@@ -5,7 +5,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         $scope.$apply()
     }, 500);
 
-    $scope.tasklists = {};
+    $scope.tasklists = [];
 
     (function tasklistsGet(pageToken) {
         function tasklistGetTasks(tasklistID, pageToken) {
@@ -16,8 +16,11 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             $window.gapi.client.request({
                 path: '/tasks/v1/lists/' + tasklistID + '/tasks',
                 callback: function(resp) {
+                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
                     for (var i in resp.items) {
-                        $scope.tasklists[tasklistID].tasks[resp.items[i].id] = resp.items[i];
+                        if (tasklistIndex != -1) {
+                            $scope.tasklists[tasklistIndex].tasks.push(resp.items[i]);
+                        }
                     }
                     if ('nextPageToken' in resp) {
                         tasklistGetTasks(tasklistID, resp.nextPageToken);
@@ -32,8 +35,8 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         }
         $window.gapi.client.tasks.tasklists.list(params).execute(function(resp) {
             for (var i in resp.items) {
-                $scope.tasklists[resp.items[i].id] = resp.items[i];
-                $scope.tasklists[resp.items[i].id].tasks = {};
+                resp.items[i].tasks = [];
+                $scope.tasklists.push(resp.items[i]);
                 tasklistGetTasks(resp.items[i].id, '');
             }
             if ('nextPageToken' in resp) {
@@ -48,7 +51,8 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             $window.gapi.client.tasks.tasklists.insert({
                 title: tasklistName,
             }).execute(function(resp) {
-                $scope.tasklists[resp.result.id] = resp.result;
+                resp.result.tasks = [];
+                $scope.tasklists.push(resp.result);
             });
         }
     };
@@ -60,7 +64,8 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             method: 'DELETE',
             callback: function(resp) {
                 if (!resp) {
-                    delete $scope.tasklists[tasklistID]
+                    index = $scope.tasklists.findIndex(function(e, i) {if (e.id == tasklistID) return i;});
+                    $scope.tasklists.splice(index, 1);
                 } else {
                     console.log(resp);
                 }
