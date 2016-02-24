@@ -10,8 +10,12 @@ body {
 }
 
 .list-group {
-    max-height: 500px;
+    height: 500px;
     overflow-y: scroll;
+}
+
+.input-group {
+    width: 100%;
 }
 
 .footer {

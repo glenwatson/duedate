@@ -35,29 +35,31 @@
 
                     <div id="tasklists" class="col-md-4">
 
-                        <div class="list-group" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist=''">
+                        <div class="list-group" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
                             <button class="list-group-item" ng-class="{active: data.selectedTasklist=='all'}" ng-click="data.selectedTasklist='all'">all</button>
                             <button class="list-group-item" ng-class="{active: data.selectedTasklist==tasklist.id}" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists">
                                 {{tasklist.title}}
                             </button>
                         </div>
 
-                        <form ng-submit="tasklistAdd(tasklistInput)">
-                            <input ng-model="tasklistInput" placeholder="Add new tasklist">
+                        <form class="input-group" ng-submit="tasklistAdd(tasklistInput)">
+                            <input class="form-control" ng-model="tasklistInput" placeholder="Add new tasklist">
                         </form>
 
                     </div>
 
                     <div id="tasks" class="col-md-8">
 
-                        <div class="list-group" ng-model="data.selectedTask" ng-init="data.selectedTask=''" ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
-                            <button class="list-group-item" ng-class="{active: data.selectedTask==task.id}" ng-click="data.selectedTask=task.id" ng-repeat="task in tasklist.tasks">
-                                {{task.title}}
-                            </button>
+                        <div class="list-group">
+                            <div ng-model="data.selectedTask" ng-init="data.selectedTask=''" ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
+                                <button class="list-group-item" ng-class="{active: data.selectedTask==task.id}" ng-click="data.selectedTask=task.id" ng-repeat="task in tasklist.tasks">
+                                    {{task.title}}
+                                </button>
+                            </div>
                         </div>
 
-                        <form ng-submit="taskAdd(taskInput, data.selectedTasklist)" ng-if="data.selectedTasklist">
-                            <input ng-model="taskInput" placeholder="Add new task">
+                        <form class="input-group" ng-submit="taskAdd(taskInput, data.selectedTasklist)" ng-if="data.selectedTasklist">
+                            <input class="form-control" ng-model="taskInput" placeholder="Add new task">
                         </form>
 
                     </div>
