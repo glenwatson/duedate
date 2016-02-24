@@ -36,10 +36,14 @@
                     <div id="tasklists" class="col-md-4">
 
                         <div class="list-group" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
-                            <button class="list-group-item" ng-class="{active: data.selectedTasklist=='all'}" ng-click="data.selectedTasklist='all'">all</button>
+                            <button class="list-group-item" ng-class="{active: data.selectedTasklist=='all'}" ng-click="data.selectedTasklist='all'">
+                                all
+                                <span class="badge">{{0}}</span>
+                            </button>
                             <button class="list-group-item" ng-class="{active: data.selectedTasklist==tasklist.id}" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists">
                                 {{tasklist.title}}
-                                <span class="badge btn" ng-click="tasklistDelete(tasklist.id)">x</span>
+                                <span class="badge">{{tasklist.tasks.length}}</span>
+                                <span class="badge btn" ng-click="tasklistDelete(tasklist.id)" ng-if="tasklist.title!='tasks'">delete</span>
                             </button>
                         </div>
 
