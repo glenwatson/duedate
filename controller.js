@@ -8,7 +8,6 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     $scope.tasklists = [];
 
     (function tasklistsGet(pageToken) {
-        console.log('tasklistGet');
         function tasklistGetTasks(tasklistID, pageToken) {
             params = {};
             if (pageToken) {
