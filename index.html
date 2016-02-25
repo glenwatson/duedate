@@ -47,7 +47,7 @@
                             </button>
                         </div>
 
-                        <form class="input-group" ng-submit="tasklistAdd(tasklistInput)">
+                        <form class="input-group" ng-submit="tasklistInsert(tasklistInput)">
                             <input class="form-control" ng-model="tasklistInput" placeholder="Add new tasklist">
                         </form>
 
@@ -64,7 +64,7 @@
                             </div>
                         </div>
 
-                        <form class="input-group" ng-submit="taskAdd(data.selectedTasklist, data.taskInput)" ng-if="data.selectedTasklist">
+                        <form class="input-group" ng-submit="taskInsert(data.selectedTasklist, data.taskInput)" ng-if="data.selectedTasklist">
                             <input class="form-control" ng-model="data.taskInput" placeholder="Add new task">
                         </form>
 

@@ -46,7 +46,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     })('');
 
-    $scope.tasklistAdd = function(tasklistName) {
+    $scope.tasklistInsert = function(tasklistName) {
         $scope.tasklistInput = '';
         if (tasklistName) {
             $window.gapi.client.tasks.tasklists.insert({
@@ -73,7 +73,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.taskAdd = function(tasklistID, taskName) {
+    $scope.taskInsert = function(tasklistID, taskName) {
         $scope.data.taskInput = '';
         if (taskName) {
             $window.gapi.client.request({
