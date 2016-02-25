@@ -73,6 +73,21 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
+    $scope.taskAdd = function(tasklistID, taskName) {
+        $scope.data.taskInput = '';
+        if (taskName) {
+            $window.gapi.client.request({
+                path: '/tasks/v1/lists/' + tasklistID + '/tasks',
+                method: 'POST',
+                body: {title: taskName},
+                callback: function(resp) {
+                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
+                    $scope.tasklists[tasklistIndex].tasks.push(resp);
+                },
+            });
+        }
+    };
+
     $scope.taskDelete = function(tasklistID, taskID) {
         $window.gapi.client.request({
             path: '/tasks/v1/lists/' + tasklistID + '/tasks/' + taskID,

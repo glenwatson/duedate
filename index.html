@@ -64,8 +64,8 @@
                             </div>
                         </div>
 
-                        <form class="input-group" ng-submit="taskAdd(taskInput, data.selectedTasklist)" ng-if="data.selectedTasklist">
-                            <input class="form-control" ng-model="taskInput" placeholder="Add new task">
+                        <form class="input-group" ng-submit="taskAdd(data.selectedTasklist, data.taskInput)" ng-if="data.selectedTasklist">
+                            <input class="form-control" ng-model="data.taskInput" placeholder="Add new task">
                         </form>
 
                     </div>
