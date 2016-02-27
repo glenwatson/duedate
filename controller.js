@@ -1,4 +1,4 @@
-var duedateApp = angular.module('duedateApp', []);
+var duedateApp = angular.module('duedateApp', ['ngMaterial']);
 
 duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     setInterval(function() {
@@ -72,13 +72,14 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.taskInsert = function(tasklistID, taskName) {
+    $scope.taskInsert = function(tasklistID, taskName, taskDueDate) {
+        $scope.data.taskDateInput = null;
         $scope.data.taskInput = '';
         if (taskName) {
             $window.gapi.client.request({
                 path: '/tasks/v1/lists/' + tasklistID + '/tasks',
                 method: 'POST',
-                body: {title: taskName},
+                body: {title: taskName, due: taskDueDate},
                 callback: function(resp) {
                     var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
                     $scope.tasklists[tasklistIndex].tasks.push(resp);

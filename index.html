@@ -10,8 +10,16 @@
 
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-messages.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.js"></script>
+
         <script src="duedate.js"></script>
         <script src="controller.js"></script>
         <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
@@ -64,8 +72,15 @@
                             </div>
                         </div>
 
-                        <form class="input-group" ng-submit="taskInsert(data.selectedTasklist, data.taskInput)" ng-if="data.selectedTasklist">
-                            <input class="form-control" ng-model="data.taskInput" placeholder="Add new task">
+                        <form class="input-group" ng-submit="taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)" ng-if="data.selectedTasklist">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" ng-model="data.taskInput" placeholder="Add new task" ng-keyup="$event.keyCode == 13 && taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
+                                </div>
+                            </div>
                         </form>
 
                     </div>
