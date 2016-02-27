@@ -64,8 +64,8 @@
                     <div id="tasks" class="col-md-8">
 
                         <div class="list-group">
-                            <div ng-model="data.selectedTask" ng-init="data.selectedTask=''" ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
-                                <button class="list-group-item" ng-class="{active: data.selectedTask==task.id}" ng-click="data.selectedTask=task.id" ng-repeat="task in tasklist.tasks | orderBy:'due'">
+                            <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
+                                <button class="list-group-item" ng-repeat="task in tasklist.tasks | orderBy:'due'">
                                     {{task.title}}
                                     <span class="badge btn" ng-click="taskDelete(data.selectedTasklist, task.id)">delete</span>
                                     <span class="badge">{{task.due | date:'fullDate' : 'UTC'}}</span>
