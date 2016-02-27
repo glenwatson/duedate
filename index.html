@@ -68,6 +68,7 @@
                                 <button class="list-group-item" ng-class="{active: data.selectedTask==task.id}" ng-click="data.selectedTask=task.id" ng-repeat="task in tasklist.tasks">
                                     {{task.title}}
                                     <span class="badge btn" ng-click="taskDelete(data.selectedTasklist, task.id)">delete</span>
+                                    <span class="badge">{{task.due | date:'fullDate' : 'UTC'}}</span>
                                 </button>
                             </div>
                         </div>
