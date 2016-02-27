@@ -39,9 +39,9 @@
 
             <div id="app-div" style="display: none" ng-controller="tasklistCtrl">
 
-                <div class="row">
+                <div layout="row">
 
-                    <div id="tasklists" class="col-md-4">
+                    <div flex="30">
 
                         <div class="list-group" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
                             <button class="list-group-item" ng-class="{active: data.selectedTasklist=='all'}" ng-click="data.selectedTasklist='all'">
@@ -61,7 +61,7 @@
 
                     </div>
 
-                    <div id="tasks" class="col-md-8">
+                    <div flex="70">
 
                         <div class="list-group">
                             <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
