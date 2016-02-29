@@ -35,7 +35,7 @@ duedate.loadTasksApi = function() {
 }
 
 duedate.startAngular = function() {
-    document.getElementById('app-div').style.display = "block";
+    document.getElementById('app-div').style.display = "flex";
     angular.element(document).ready(function() {
         angular.bootstrap(document, ['duedateApp']);
     });
