@@ -1,10 +1,6 @@
 body {
 }
 
-::-webkit-scrollbar {
-    display: none;
-}
-
 .container {
     max-width: 1000px;
     margin: 0 auto;
