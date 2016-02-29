@@ -7,8 +7,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.css">
+        <link rel="stylesheet" href="style.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 
@@ -51,32 +51,36 @@
                     </md-list>
 
                     <form class="input-group" ng-submit="tasklistInsert(data.tasklistInput)">
-                        <input class="form-control" ng-model="data.tasklistInput" placeholder="Add new tasklist">
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="data.tasklistInput" placeholder="Add new tasklist">
+                        </md-input-container>
                     </form>
 
                 </div>
 
                 <div flex="70">
 
-                    <div class="list-group">
+                    <md-list>
                         <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
-                            <button class="list-group-item" ng-repeat="task in tasklist.tasks | orderBy:'due'">
-                                {{task.title}}
-                                <span class="badge btn" ng-click="taskDelete(data.selectedTasklist, task.id)">delete</span>
-                                <span class="badge">{{task.due | date:'fullDate' : 'UTC'}}</span>
-                            </button>
+                            <md-list-item class="md-2-line secondary-button-padding" ng-repeat="task in tasklist.tasks | orderBy:'due'">
+                                <div class="md-list-item-text">
+                                    <h4>{{task.title}}</h4>
+                                    <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
+                                </div>
+                                <md-button class="md-secondary" ng-click="taskDelete(data.selectedTasklist, task.id)">delete</md-button>
+                            </md-list-item>
                         </div>
-                    </div>
+                    </md-list>
 
-                    <form class="input-group" ng-submit="taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)" ng-if="data.selectedTasklist">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
-                            </div>
-                            <div class="col-md-8">
-                                <input class="form-control" ng-model="data.taskInput" placeholder="Add new task" ng-keyup="$event.keyCode == 13 && taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
-                            </div>
-                        </div>
+                    <form>
+
+						<div layout="row" class="md-inline-form">
+							<md-input-container md-no-float class="md-block" flex>
+							<input ng-model="data.taskInput" placeholder="Task name" ng-keyup="$event.keyCode == 13 && taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
+							</md-input-container>
+							<md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
+						</div>
+
                     </form>
 
                 </div>

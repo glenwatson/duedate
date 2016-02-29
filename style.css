@@ -15,23 +15,10 @@ header {
     padding: 20px 0;
 }
 
-#app-div {
-    margin: 25px 0;
-}
-
-.list-group {
+md-list {
     height: 500px;
     overflow-y: scroll;
     border: 1px solid #ddd;
-}
-
-.list-group-item {
-    border-width: 1px 0px !important;
-    border-radius: 0px !important;
-}
-
-.input-group {
-    width: 100%;
 }
 
 footer {
