@@ -5,7 +5,12 @@ body {
     display: none;
 }
 
-.page-header {
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.header {
     text-align: center;
 }
 
