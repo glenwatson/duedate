@@ -72,16 +72,12 @@
                         </div>
                     </md-list>
 
-                    <form>
-
-                        <div layout="row" class="md-inline-form">
-                            <md-input-container md-no-float flex>
-                                <input ng-model="data.taskInput" placeholder="Task name" ng-keyup="$event.keyCode == 13 && taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
-                            </md-input-container>
-                            <md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
-                            <div><md-button ng-click="taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">Add Task</md-button></div>
-                        </div>
-
+                    <form layout="row" class="md-inline-form">
+                        <md-input-container md-no-float flex>
+                            <input ng-model="data.taskInput" placeholder="Task name" ng-keyup="$event.keyCode == 13 && taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
+                        </md-input-container>
+                        <md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
+                        <div><md-button ng-click="taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">Add Task</md-button></div>
                     </form>
 
                 </div>
