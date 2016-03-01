@@ -1,99 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
 
-        <title>duedate</title>
+    <title>duedate</title>
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.css">
+    <link rel="stylesheet" href="style.css">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-aria.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-messages.min.js"></script>
+    <!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-aria.min.js"></script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.js"></script>
 
-        <script src="duedate.js"></script>
-        <script src="controller.js"></script>
-        <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+    <script src="duedate.js"></script>
+    <script src="controller.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
 
-    </head>
-    <body>
+</head>
+<body>
 
-        <div class="container">
-            <div class="page-header">
-                <h1>duedate</h1>
-            </div>
+    <div class="container">
 
-            <div id="authorize-div" style="display: none">
-                <span>Authorize access to Google Tasks API</span>
-                <button id="authorize-button" onclick="duedate.handleAuthClick(event)">Authorize</button>
-            </div>
+        <header>
+            <h1>duedate</h1>
+        </header>
 
-            <div id="app-div" style="display: none" ng-controller="tasklistCtrl">
-
-                <div class="row">
-
-                    <div id="tasklists" class="col-md-4">
-
-                        <div class="list-group" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
-                            <button class="list-group-item" ng-class="{active: data.selectedTasklist=='all'}" ng-click="data.selectedTasklist='all'">
-                                all
-                                <span class="badge">{{0}}</span>
-                            </button>
-                            <button class="list-group-item" ng-class="{active: data.selectedTasklist==tasklist.id}" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists">
-                                {{tasklist.title}}
-                                <span class="badge">{{tasklist.tasks.length}}</span>
-                                <span class="badge btn" ng-click="tasklistDelete(tasklist.id)" ng-if="tasklist.title!='tasks'">delete</span>
-                            </button>
-                        </div>
-
-                        <form class="input-group" ng-submit="tasklistInsert(data.tasklistInput)">
-                            <input class="form-control" ng-model="data.tasklistInput" placeholder="Add new tasklist">
-                        </form>
-
-                    </div>
-
-                    <div id="tasks" class="col-md-8">
-
-                        <div class="list-group">
-                            <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
-                                <button class="list-group-item" ng-repeat="task in tasklist.tasks | orderBy:'due'">
-                                    {{task.title}}
-                                    <span class="badge btn" ng-click="taskDelete(data.selectedTasklist, task.id)">delete</span>
-                                    <span class="badge">{{task.due | date:'fullDate' : 'UTC'}}</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <form class="input-group" ng-submit="taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)" ng-if="data.selectedTasklist">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
-                                </div>
-                                <div class="col-md-8">
-                                    <input class="form-control" ng-model="data.taskInput" placeholder="Add new task" ng-keyup="$event.keyCode == 13 && taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <footer class="footer">
-                <p>© 2016 <a href="http://francisbergin.com">Francis Bergin</a></p>
-            </footer>
+        <div id="authorize-div" style="display: none">
+            <span>Authorize access to Google Tasks API</span>
+            <button id="authorize-button" onclick="duedate.handleAuthClick(event)">Authorize</button>
         </div>
 
-    </body>
+        <div id="app-div" style="display: none" layout="row" ng-controller="tasklistCtrl">
+
+            <div flex="30">
+
+                <md-list ng-model="data.selectedTasklist" ng-init="data.selectedTasklist=''">
+                    <md-list-item class="md-2-line secondary-button-padding" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                        <div class="md-list-item-text">
+                            <h3>{{tasklist.title}}</h3>
+                            <p>items: {{tasklist.tasks.length}}</p>
+                        </div>
+                        <md-button class="md-secondary" ng-click="tasklistDelete(tasklist.id)" ng-if="tasklist.title!='tasks'">delete</md-button>
+                    </md-list-item>
+                </md-list>
+
+                <form ng-submit="tasklistInsert(data.tasklistInput)">
+                    <md-input-container md-no-float class="md-block">
+                        <input ng-model="data.tasklistInput" placeholder="Add new tasklist">
+                    </md-input-container>
+                </form>
+
+            </div>
+
+            <div flex="70">
+
+                <md-list>
+                    <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
+                        <md-list-item class="md-2-line secondary-button-padding" ng-repeat="task in tasklist.tasks | orderBy:'due'">
+                            <div class="md-list-item-text">
+                                <h4>{{task.title}}</h4>
+                                <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
+                            </div>
+                            <md-button class="md-secondary" ng-click="taskDelete(data.selectedTasklist, task.id)">delete</md-button>
+                        </md-list-item>
+                    </div>
+                </md-list>
+
+                <form layout="row" class="md-inline-form">
+                    <md-input-container md-no-float flex>
+                        <input ng-model="data.taskInput" placeholder="Task name" ng-keyup="$event.keyCode == 13 && taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
+                    </md-input-container>
+                    <md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
+                    <div><md-button ng-click="taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">Add Task</md-button></div>
+                </form>
+
+            </div>
+
+        </div>
+
+        <footer>
+            <p>© 2016 <a href="http://francisbergin.com">Francis Bergin</a></p>
+        </footer>
+
+    </div>
+
+</body>
 </html>

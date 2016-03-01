@@ -1,36 +1,23 @@
 body {
 }
 
-::-webkit-scrollbar {
-    display: none;
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.page-header {
+header {
     text-align: center;
+    padding: 20px 0;
 }
 
-#app-div {
-    margin: 25px 0;
-}
-
-.list-group {
-    height: 500px;
+md-list {
+    height: 550px;
     overflow-y: scroll;
     border: 1px solid #ddd;
 }
 
-.list-group-item {
-    border-width: 1px 0px !important;
-    border-radius: 0px !important;
-}
-
-.input-group {
-    width: 100%;
-}
-
-.footer {
+footer {
     text-align: center;
-    padding-top: 20px;
-    color: #777;
-    border-top: 1px solid #e5e5e5;
+    padding: 20px 0;
 }
