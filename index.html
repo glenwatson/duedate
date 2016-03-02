@@ -78,7 +78,7 @@
                                 <md-button class="md-icon-button" ng-click="$mdOpenMenu()">
                                     <md-icon md-menu-origin>more_vert</md-icon>
                                 </md-button>
-                                <md-menu-content width="3">
+                                <md-menu-content>
                                     <md-menu-item>
                                         <md-button ng-click="taskDelete(task)">
                                             <div layout="row">
@@ -86,6 +86,9 @@
                                                 <md-icon md-menu-align-target style="margin-right:0">clear</md-icon>
                                             </div>
                                         </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-datepicker ng-model="data.taskDateModify" md-placeholder="Modify due date" ng-change="modifyTaskDate(task, data.taskDateModify)"></md-datepicker>
                                     </md-menu-item>
                                 </md-menu-content>
                             </md-menu>

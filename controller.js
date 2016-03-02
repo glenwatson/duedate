@@ -108,4 +108,24 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             },
         });
     };
+
+    $scope.modifyTaskDate = function(task, newTaskDate) {
+        $scope.data.taskDateModify = null;
+        task.due = newTaskDate;
+        $window.gapi.client.request({
+            path: task.selfLink,
+            method: 'PUT',
+            body: task,
+            callback: function(resp) {
+                if (resp) {
+                    var tasklistID = /lists\/(.*)\/tasks/.exec(task.selfLink)[1];
+                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
+                    var taskIndex = $scope.tasklists[tasklistIndex].tasks.map(function(e) {return e.id}).indexOf(task.id);
+                    $scope.tasklists[tasklistIndex].tasks[taskIndex] = resp;
+                } else {
+                    console.log(resp);
+                }
+            },
+        });
+    };
 });
