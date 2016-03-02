@@ -74,15 +74,17 @@
                                 <h4>{{task.title}}</h4>
                                 <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
                             </div>
-                            <md-menu class="md-secondary">
+                            <md-menu class="md-secondary" md-position-mode="target-right target">
                                 <md-button class="md-icon-button" ng-click="$mdOpenMenu()">
-                                    <md-icon>more_vert</md-icon>
+                                    <md-icon md-menu-origin>more_vert</md-icon>
                                 </md-button>
-                                <md-menu-content>
+                                <md-menu-content width="3">
                                     <md-menu-item>
                                         <md-button ng-click="taskDelete(task)">
-                                            <p>delete</p>
-                                            <md-icon>clear</md-icon>
+                                            <div layout="row">
+                                                <p flex>delete</p>
+                                                <md-icon md-menu-align-target style="margin-right:0">clear</md-icon>
+                                            </div>
                                         </md-button>
                                     </md-menu-item>
                                 </md-menu-content>
