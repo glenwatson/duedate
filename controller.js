@@ -118,10 +118,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             body: task,
             callback: function(resp) {
                 if (resp) {
-                    var tasklistID = /lists\/(.*)\/tasks/.exec(task.selfLink)[1];
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
-                    var taskIndex = $scope.tasklists[tasklistIndex].tasks.map(function(e) {return e.id}).indexOf(task.id);
-                    $scope.tasklists[tasklistIndex].tasks[taskIndex] = resp;
+                    task = resp;
                 } else {
                     console.log(resp);
                 }
