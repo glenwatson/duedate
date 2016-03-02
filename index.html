@@ -73,7 +73,7 @@
                                 <h4>{{task.title}}</h4>
                                 <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
                             </div>
-                            <md-button class="md-secondary" ng-click="taskDelete(data.selectedTasklist, task.id)">delete</md-button>
+                            <md-button class="md-secondary" ng-click="taskDelete(task)">delete</md-button>
                         </md-list-item>
                     </div>
                 </md-list>

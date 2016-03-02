@@ -92,14 +92,15 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         }
     };
 
-    $scope.taskDelete = function(tasklistID, taskID) {
+    $scope.taskDelete = function(task) {
         $window.gapi.client.request({
-            path: '/tasks/v1/lists/' + tasklistID + '/tasks/' + taskID,
+            path: task.selfLink,
             method: 'DELETE',
             callback: function(resp) {
                 if (!resp) {
+                    var tasklistID = /lists\/(.*)\/tasks/.exec(task.selfLink)[1];
                     var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
-                    var taskIndex = $scope.tasklists[tasklistIndex].tasks.map(function(e) {return e.id}).indexOf(taskID);
+                    var taskIndex = $scope.tasklists[tasklistIndex].tasks.map(function(e) {return e.id}).indexOf(task.id);
                     $scope.tasklists[tasklistIndex].tasks.splice(taskIndex, 1);
                 } else {
                     console.log(resp);
