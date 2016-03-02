@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
@@ -69,11 +70,23 @@
                 <md-list>
                     <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist || data.selectedTasklist=='all'">
                         <md-list-item class="md-2-line secondary-button-padding" ng-repeat="task in tasklist.tasks | orderBy:'due'">
-                            <div class="md-list-item-text">
+                            <div class="md-list-item-text" style="padding-left: 20px">
                                 <h4>{{task.title}}</h4>
                                 <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
                             </div>
-                            <md-button class="md-secondary" ng-click="taskDelete(task)">delete</md-button>
+                            <md-menu class="md-secondary">
+                                <md-button class="md-icon-button" ng-click="$mdOpenMenu()">
+                                    <md-icon>more_vert</md-icon>
+                                </md-button>
+                                <md-menu-content>
+                                    <md-menu-item>
+                                        <md-button ng-click="taskDelete(task)">
+                                            <p>delete</p>
+                                            <md-icon>clear</md-icon>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
                         </md-list-item>
                     </div>
                 </md-list>
