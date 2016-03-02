@@ -109,6 +109,23 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
+    $scope.taskNameModify = function(task, taskNewName, event) {
+        event.target.blur();
+        task.title = taskNewName;
+        $window.gapi.client.request({
+            path: task.selfLink,
+            method: 'PUT',
+            body: task,
+            callback: function(resp) {
+                if (resp) {
+                    task = resp;
+                } else {
+                    console.log(resp);
+                }
+            },
+        });
+    };
+
     $scope.modifyTaskDate = function(task, newTaskDate) {
         $scope.data.taskDateModify = null;
         task.due = newTaskDate;

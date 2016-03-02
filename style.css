@@ -17,6 +17,10 @@ md-list {
     border: 1px solid #ddd;
 }
 
+md-input-container .md-errors-spacer {
+    min-height: 0;
+}
+
 footer {
     text-align: center;
     padding: 20px 0;
