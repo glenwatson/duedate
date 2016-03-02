@@ -40,7 +40,13 @@
 
             <div flex="30">
 
-                <md-list ng-model="data.selectedTasklist" ng-init="data.selectedTasklist=''">
+                <md-list ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
+                    <md-list-item class="md-2-line" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                        <div class="md-list-item-text">
+                            <h3>all</h3>
+                            <p>items: {{tasklistsTotal()}}</p>
+                        </div>
+                    </md-list-item>
                     <md-list-item class="md-2-line secondary-button-padding" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
                         <div class="md-list-item-text">
                             <h3>{{tasklist.title}}</h3>
@@ -61,7 +67,7 @@
             <div flex="70">
 
                 <md-list>
-                    <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist">
+                    <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist || data.selectedTasklist=='all'">
                         <md-list-item class="md-2-line secondary-button-padding" ng-repeat="task in tasklist.tasks | orderBy:'due'">
                             <div class="md-list-item-text">
                                 <h4>{{task.title}}</h4>

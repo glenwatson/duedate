@@ -45,6 +45,10 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     })('');
 
+    $scope.tasklistsTotal = function() {
+        return $scope.tasklists.reduce(function(a, b) {return a + b.tasks.length;}, 0);
+    };
+
     $scope.tasklistInsert = function(tasklistName) {
         $scope.data.tasklistInput = '';
         if (tasklistName) {
