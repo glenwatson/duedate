@@ -2,7 +2,7 @@ var duedateApp = angular.module('duedateApp', ['ngMaterial']);
 
 duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     setInterval(function() {
-        $scope.$apply()
+        $scope.$apply();
     }, 500);
 
     $scope.tasklists = [];
@@ -16,7 +16,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             $window.gapi.client.request({
                 path: '/tasks/v1/lists/' + tasklistID + '/tasks',
                 callback: function(resp) {
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
+                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
                     for (var i in resp.items) {
                         if (tasklistIndex != -1) {
                             $scope.tasklists[tasklistIndex].tasks.push(resp.items[i]);
@@ -67,7 +67,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             method: 'DELETE',
             callback: function(resp) {
                 if (!resp) {
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
+                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
                     $scope.tasklists.splice(tasklistIndex, 1);
                 } else {
                     console.log(resp);
@@ -85,7 +85,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
                 method: 'POST',
                 body: {title: taskName, due: taskDueDate},
                 callback: function(resp) {
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
+                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
                     $scope.tasklists[tasklistIndex].tasks.push(resp);
                 },
             });
@@ -99,8 +99,8 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             callback: function(resp) {
                 if (!resp) {
                     var tasklistID = /lists\/(.*)\/tasks/.exec(task.selfLink)[1];
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id}).indexOf(tasklistID);
-                    var taskIndex = $scope.tasklists[tasklistIndex].tasks.map(function(e) {return e.id}).indexOf(task.id);
+                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
+                    var taskIndex = $scope.tasklists[tasklistIndex].tasks.map(function(e) {return e.id;}).indexOf(task.id);
                     $scope.tasklists[tasklistIndex].tasks.splice(taskIndex, 1);
                 } else {
                     console.log(resp);

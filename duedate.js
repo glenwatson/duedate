@@ -19,7 +19,7 @@ duedate.handleAuthResult = function(authResult) {
     } else {
         authorizeDiv.style.display = 'inline';
     }
-}
+};
 
 duedate.handleAuthClick = function(event) {
     gapi.auth.authorize({
@@ -28,15 +28,15 @@ duedate.handleAuthClick = function(event) {
         immediate: false
     }, duedate.handleAuthResult);
     return false;
-}
+};
 
 duedate.loadTasksApi = function() {
     gapi.client.load('tasks', 'v1', duedate.startAngular);
-}
+};
 
 duedate.startAngular = function() {
     document.getElementById('app-div').style.display = "flex";
     angular.element(document).ready(function() {
         angular.bootstrap(document, ['duedateApp']);
     });
-}
+};
