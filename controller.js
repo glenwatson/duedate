@@ -142,4 +142,24 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             },
         });
     };
+
+    $scope.taskStatusToggle = function(task) {
+        if (task.status == 'completed') {
+            task.completed = (new Date()).toISOString();
+        } else {
+            task.completed = undefined;
+        }
+        $window.gapi.client.request({
+            path: task.selfLink,
+            method: 'PUT',
+            body: task,
+            callback: function(resp) {
+                if (resp) {
+                    task = resp;
+                } else {
+                    console.log(resp);
+                }
+            },
+        });
+    };
 });

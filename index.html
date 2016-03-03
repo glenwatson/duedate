@@ -71,8 +71,9 @@
                     <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist || data.selectedTasklist=='all'">
                         <md-list-item class="md-2-line secondary-button-padding" ng-repeat="task in tasklist.tasks | orderBy:'due'">
                             <div class="md-list-item-text" style="padding-left: 20px">
+                                <md-checkbox ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="taskStatusToggle(task)"></md-checkbox>
                                 <md-input-container md-no-float>
-                                    <input style="width:500px" ng-model="task.title" placeholder="Modify task name" ng-keyup="$event.keyCode == 13 && taskNameModify(task, task.title, $event)">
+                                    <input style="width:400px" ng-model="task.title" placeholder="Modify task name" ng-keyup="$event.keyCode == 13 && taskNameModify(task, task.title, $event)">
                                     <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
                                 </md-input-container>
                             </div>
