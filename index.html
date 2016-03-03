@@ -76,24 +76,12 @@
                                     <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
                                 </md-input-container>
                             </div>
-                            <md-menu class="md-secondary" md-position-mode="target-right target">
-                                <md-button class="md-icon-button" ng-click="$mdOpenMenu()">
-                                    <md-icon md-menu-origin>more_vert</md-icon>
+                            <div class="md-secondary">
+                                <md-datepicker ng-model="data.taskDateModify" md-placeholder="Modify due date" ng-change="modifyTaskDate(task, data.taskDateModify)"></md-datepicker>
+                                <md-button class="md-icon-button" ng-click="taskDelete(task)">
+                                    <md-icon>clear</md-icon>
                                 </md-button>
-                                <md-menu-content>
-                                    <md-menu-item>
-                                        <md-button ng-click="taskDelete(task)">
-                                            <div layout="row">
-                                                <p flex>delete</p>
-                                                <md-icon md-menu-align-target style="margin-right:0">clear</md-icon>
-                                            </div>
-                                        </md-button>
-                                    </md-menu-item>
-                                    <md-menu-item>
-                                        <md-datepicker ng-model="data.taskDateModify" md-placeholder="Modify due date" ng-change="modifyTaskDate(task, data.taskDateModify)"></md-datepicker>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
+                            </div>
                         </md-list-item>
                     </div>
                 </md-list>
