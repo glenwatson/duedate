@@ -7,8 +7,8 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
     $scope.tasklists = [];
 
-    (function tasklistsGet(pageToken) {
-        function tasklistGetTasks(tasklistID, pageToken) {
+    (function tasklistsList(pageToken) {
+        function tasksList(tasklistID, pageToken) {
             params = {};
             if (pageToken) {
                 params = {pageToken: pageToken};
@@ -23,7 +23,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
                         }
                     }
                     if ('nextPageToken' in resp) {
-                        tasklistGetTasks(tasklistID, resp.nextPageToken);
+                        tasksList(tasklistID, resp.nextPageToken);
                     }
                 }
             });
@@ -37,10 +37,10 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             for (var i in resp.items) {
                 resp.items[i].tasks = [];
                 $scope.tasklists.push(resp.items[i]);
-                tasklistGetTasks(resp.items[i].id, '');
+                tasksList(resp.items[i].id, '');
             }
             if ('nextPageToken' in resp) {
-                tasklistsGet(resp.nextPageToken);
+                tasklistsList(resp.nextPageToken);
             }
         });
     })('');
@@ -49,7 +49,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         return $scope.tasklists.reduce(function(a, b) {return a + b.tasks.length;}, 0);
     };
 
-    $scope.tasklistInsert = function(tasklistName) {
+    $scope.tasklistsInsert = function(tasklistName) {
         $scope.data.tasklistInput = '';
         if (tasklistName) {
             $window.gapi.client.tasks.tasklists.insert({
@@ -61,7 +61,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         }
     };
 
-    $scope.tasklistDelete = function(tasklistID) {
+    $scope.tasklistsDelete = function(tasklistID) {
         $window.gapi.client.request({
             path: '/tasks/v1/users/@me/lists/' + tasklistID,
             method: 'DELETE',
@@ -76,7 +76,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.taskInsert = function(tasklistID, taskName, taskDueDate) {
+    $scope.tasksInsert = function(tasklistID, taskName, taskDueDate) {
         $scope.data.taskDateInput = null;
         $scope.data.taskInput = '';
         if (taskName) {
@@ -92,7 +92,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         }
     };
 
-    $scope.taskDelete = function(task) {
+    $scope.tasksDelete = function(task) {
         $window.gapi.client.request({
             path: task.selfLink,
             method: 'DELETE',
@@ -109,7 +109,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.taskNameModify = function(task, taskNewName, event) {
+    $scope.tasksUpdateName = function(task, taskNewName, event) {
         event.target.blur();
         task.title = taskNewName;
         $window.gapi.client.request({
@@ -126,7 +126,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.modifyTaskDate = function(task, newTaskDate) {
+    $scope.tasksUpdateDate = function(task, newTaskDate) {
         $scope.data.taskDateModify = null;
         task.due = newTaskDate;
         $window.gapi.client.request({
@@ -143,7 +143,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.taskStatusToggle = function(task) {
+    $scope.tasksUpdateStatus = function(task) {
         if (task.status == 'completed') {
             task.completed = (new Date()).toISOString();
         } else {

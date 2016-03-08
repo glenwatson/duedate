@@ -53,11 +53,11 @@
                             <h3>{{tasklist.title}}</h3>
                             <p>items: {{tasklist.tasks.length}}</p>
                         </div>
-                        <md-button class="md-secondary" ng-click="tasklistDelete(tasklist.id)" ng-if="tasklist.title!='tasks'">delete</md-button>
+                        <md-button class="md-secondary" ng-click="tasklistsDelete(tasklist.id)" ng-if="tasklist.title!='tasks'">delete</md-button>
                     </md-list-item>
                 </md-list>
 
-                <form ng-submit="tasklistInsert(data.tasklistInput)">
+                <form ng-submit="tasklistsInsert(data.tasklistInput)">
                     <md-input-container md-no-float class="md-block">
                         <input ng-model="data.tasklistInput" placeholder="Add new tasklist">
                     </md-input-container>
@@ -71,15 +71,15 @@
                     <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist || data.selectedTasklist=='all'">
                         <md-list-item class="md-2-line secondary-button-padding" ng-repeat="task in tasklist.tasks | orderBy:'due'">
                             <div class="md-list-item-text" style="padding-left: 20px">
-                                <md-checkbox ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="taskStatusToggle(task)"></md-checkbox>
+                                <md-checkbox ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksUpdateStatus(task)"></md-checkbox>
                                 <md-input-container md-no-float>
-                                    <input style="width:400px" ng-model="task.title" placeholder="Modify task name" ng-keyup="$event.keyCode == 13 && taskNameModify(task, task.title, $event)">
+                                    <input style="width:400px" ng-model="task.title" placeholder="Modify task name" ng-keyup="$event.keyCode == 13 && tasksUpdateName(task, task.title, $event)">
                                     <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
                                 </md-input-container>
                             </div>
                             <div class="md-secondary">
-                                <md-datepicker ng-model="data.taskDateModify" md-placeholder="Modify due date" ng-change="modifyTaskDate(task, data.taskDateModify)"></md-datepicker>
-                                <md-button class="md-icon-button" ng-click="taskDelete(task)">
+                                <md-datepicker ng-model="data.taskDateModify" md-placeholder="Modify due date" ng-change="tasksUpdateDate(task, data.taskDateModify)"></md-datepicker>
+                                <md-button class="md-icon-button" ng-click="tasksDelete(task)">
                                     <md-icon>clear</md-icon>
                                 </md-button>
                             </div>
@@ -89,10 +89,10 @@
 
                 <form layout="row" class="md-inline-form">
                     <md-input-container md-no-float flex>
-                        <input ng-model="data.taskInput" placeholder="Task name" ng-keyup="$event.keyCode == 13 && taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
+                        <input ng-model="data.taskInput" placeholder="Task name" ng-keyup="$event.keyCode == 13 && tasksInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
                     </md-input-container>
                     <md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
-                    <div><md-button ng-click="taskInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">Add Task</md-button></div>
+                    <div><md-button ng-click="tasksInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">Add Task</md-button></div>
                 </form>
 
             </div>
