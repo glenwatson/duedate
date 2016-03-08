@@ -58,18 +58,14 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         }
     };
 
-    $scope.tasklistsDelete = function(tasklistID) {
-        $window.gapi.client.request({
-            path: '/tasks/v1/users/@me/lists/' + tasklistID,
-            method: 'DELETE',
-            callback: function(resp) {
-                if (!resp) {
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
-                    $scope.tasklists.splice(tasklistIndex, 1);
-                } else {
-                    console.log(resp);
-                }
-            },
+    $scope.tasklistsDelete = function(tasklist) {
+        var parameters = {tasklist: tasklist.id};
+        $window.gapi.client.tasks.tasklists.delete(parameters).execute(function(resp) {
+            if (resp) {
+                $scope.tasklists.splice($scope.tasklists.indexOf(tasklist), 1);
+            } else {
+                console.log(resp);
+            }
         });
     };
 

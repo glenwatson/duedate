@@ -53,7 +53,7 @@
                             <h3>{{tasklist.title}}</h3>
                             <p>items: {{tasklist.tasks.length}}</p>
                         </div>
-                        <md-button class="md-secondary" ng-click="tasklistsDelete(tasklist.id)" ng-if="tasklist.title!='tasks'">delete</md-button>
+                        <md-button class="md-secondary" ng-click="tasklistsDelete(tasklist)" ng-if="tasklist.title!='tasks'">delete</md-button>
                     </md-list-item>
                 </md-list>
 
