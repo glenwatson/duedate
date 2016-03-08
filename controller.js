@@ -7,43 +7,40 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
     $scope.tasklists = [];
 
-    (function tasklistsList(pageToken) {
-        function tasksList(tasklistID, pageToken) {
-            params = {};
-            if (pageToken) {
-                params = {pageToken: pageToken};
-            }
-            $window.gapi.client.request({
-                path: '/tasks/v1/lists/' + tasklistID + '/tasks',
-                callback: function(resp) {
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
-                    for (var i in resp.items) {
-                        if (tasklistIndex != -1) {
-                            $scope.tasklists[tasklistIndex].tasks.push(resp.items[i]);
-                        }
-                    }
-                    if ('nextPageToken' in resp) {
-                        tasksList(tasklistID, resp.nextPageToken);
-                    }
-                }
-            });
-        }
-
-        params = {};
+    function tasksList(tasklist, pageToken) {
+        var parameters = {tasklist: tasklist.id};
         if (pageToken) {
-            params = {pageToken: pageToken};
+            params.pageToken = pageToken;
         }
-        $window.gapi.client.tasks.tasklists.list(params).execute(function(resp) {
+        $window.gapi.client.tasks.tasks.list(parameters).execute(function(resp) {
             for (var i in resp.items) {
-                resp.items[i].tasks = [];
-                $scope.tasklists.push(resp.items[i]);
-                tasksList(resp.items[i].id, '');
+                tasklist.tasks.push(resp.items[i]);
+            }
+            if ('nextPageToken' in resp) {
+                tasksList(tasklist, resp.nextPageToken);
+            }
+        });
+    }
+
+    function tasklistsList(pageToken) {
+        var parameters = {};
+        if (pageToken) {
+            params.pageToken = pageToken;
+        }
+        $window.gapi.client.tasks.tasklists.list(parameters).execute(function(resp) {
+            for (var i in resp.items) {
+                var tasklist = resp.items[i];
+                tasklist.tasks = [];
+                tasksList(tasklist, '');
+                $scope.tasklists.push(tasklist);
             }
             if ('nextPageToken' in resp) {
                 tasklistsList(resp.nextPageToken);
             }
         });
-    })('');
+    }
+
+    tasklistsList('');
 
     $scope.tasklistsTotal = function() {
         return $scope.tasklists.reduce(function(a, b) {return a + b.tasks.length;}, 0);
