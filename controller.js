@@ -1,4 +1,4 @@
-var duedateApp = angular.module('duedateApp', ['ngMaterial']);
+var duedateApp = angular.module('duedateApp', []);
 
 duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     setInterval(function() {
