@@ -8,10 +8,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     $scope.tasklists = [];
 
     function tasksList(tasklist, pageToken) {
-        var parameters = {tasklist: tasklist.id};
-        if (pageToken) {
-            params.pageToken = pageToken;
-        }
+        var parameters = {pageToken: pageToken, tasklist: tasklist.id};
         $window.gapi.client.tasks.tasks.list(parameters).execute(function(resp) {
             for (var i in resp.items) {
                 tasklist.tasks.push(resp.items[i]);
@@ -23,15 +20,12 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     }
 
     function tasklistsList(pageToken) {
-        var parameters = {};
-        if (pageToken) {
-            params.pageToken = pageToken;
-        }
+        var parameters = {pageToken: pageToken};
         $window.gapi.client.tasks.tasklists.list(parameters).execute(function(resp) {
             for (var i in resp.items) {
                 var tasklist = resp.items[i];
                 tasklist.tasks = [];
-                tasksList(tasklist, '');
+                tasksList(tasklist, null);
                 $scope.tasklists.push(tasklist);
             }
             if ('nextPageToken' in resp) {
@@ -40,7 +34,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     }
 
-    tasklistsList('');
+    tasklistsList(null);
 
     $scope.tasklistsTotal = function() {
         return $scope.tasklists.reduce(function(a, b) {return a + b.tasks.length;}, 0);
