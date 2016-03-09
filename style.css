@@ -18,6 +18,19 @@ ul {
     margin: 20px 0;
 }
 
+.task {
+    margin: 10px 0;
+}
+
+.task-checkbox {
+    float: left;
+    width: 20px;
+}
+
+.task-done {
+    text-decoration: line-through;
+}
+
 md-list {
     height: 550px;
     overflow-y: scroll;

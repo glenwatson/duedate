@@ -146,3 +146,11 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 });
+
+duedateApp.directive('taskDate', function() {
+    return function(scope, element, attrs) {
+        angular.element(element).datepicker({autoclose: true}).on('changeDate', function(e) {
+            scope.tasksUpdateDate(scope.task, e.date);
+        });
+    };
+});
