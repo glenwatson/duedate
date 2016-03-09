@@ -6,9 +6,8 @@ body {
     margin: 0 auto;
 }
 
-header {
+.page-header {
     text-align: center;
-    padding: 20px 0;
 }
 
 md-list {
@@ -29,7 +28,8 @@ md-input-container .md-errors-spacer {
     min-height: 0;
 }
 
-footer {
-    text-align: center;
+.footer {
     padding: 20px 0;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
 }
