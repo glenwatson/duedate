@@ -42,14 +42,13 @@
 
                 <ul class="nav" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
                     <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
-                        all
-                        <span class="badge pull-right">{{tasklistsTotal()}}</span>
+                        <h5>all <small>items: {{tasklistsTotal()}}</small></h5>
                     </li>
                     <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
-                        <!-- <button class="btn badge pull-right" ng-click="tasklistsDelete(tasklist)" ng-if="tasklist.title!='tasks'">delete</button> -->
-                        <!-- <button class="btn" ng-click="tasklistsDelete(tasklist)" ng-if="tasklist.title!='tasks'">delete</button> -->
-                        {{tasklist.title}}
-                        <span class="badge pull-right">{{tasklist.tasks.length}}</span>
+                        <button class="btn btn-default pull-right" ng-if="tasklist.title!='tasks'">
+                            <i class="fa fa-trash" ng-click="tasklistsDelete(tasklist)"></i>
+                        </button>
+                        <h5>{{tasklist.title}} <small>items: {{tasklist.tasks.length}}</small></h5>
                     </li>
                 </ul>
 
@@ -69,6 +68,9 @@
                             </div>
                             <div class="task-title">
                                 <span>{{task.title}}</span>
+                                <button class="btn btn-default btn-xs pull-right">
+                                    <i class="fa fa-trash" ng-click="tasksDelete(task)"></i>
+                                </button>
                                 <button class="btn btn-default btn-xs pull-right" task-date>
                                     <div ng-if="task.due">{{task.due | date:'fullDate' : 'UTC'}}</div>
                                     <div ng-if="!task.due"><i class="fa fa-calendar"></i></div>
