@@ -40,26 +40,21 @@
 
             <div class="col-md-4">
 
-                <md-list ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
-                    <md-list-item class="md-2-line" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
-                        <div class="md-list-item-text">
-                            <h3>all</h3>
-                            <p>items: {{tasklistsTotal()}}</p>
-                        </div>
-                    </md-list-item>
-                    <md-list-item class="md-2-line secondary-button-padding" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
-                        <div class="md-list-item-text">
-                            <h3>{{tasklist.title}}</h3>
-                            <p>items: {{tasklist.tasks.length}}</p>
-                        </div>
-                        <md-button class="md-secondary" ng-click="tasklistsDelete(tasklist)" ng-if="tasklist.title!='tasks'">delete</md-button>
-                    </md-list-item>
-                </md-list>
+                <ul class="nav" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
+                    <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                        all
+                        <span class="badge pull-right">{{tasklistsTotal()}}</span>
+                    </li>
+                    <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                        <!-- <button class="btn badge pull-right" ng-click="tasklistsDelete(tasklist)" ng-if="tasklist.title!='tasks'">delete</button> -->
+                        <!-- <button class="btn" ng-click="tasklistsDelete(tasklist)" ng-if="tasklist.title!='tasks'">delete</button> -->
+                        {{tasklist.title}}
+                        <span class="badge pull-right">{{tasklist.tasks.length}}</span>
+                    </li>
+                </ul>
 
                 <form ng-submit="tasklistsInsert(data.tasklistInput)">
-                    <md-input-container md-no-float class="md-block">
-                        <input ng-model="data.tasklistInput" placeholder="Add new tasklist">
-                    </md-input-container>
+                    <input type="text" class="form-control" ng-model="data.tasklistInput" placeholder="Add new tasklist">
                 </form>
 
             </div>

@@ -5,6 +5,15 @@ body {
     text-align: center;
 }
 
+.btn {
+    text-align: left;
+}
+
+ul {
+    height: 500px;
+    overflow-y: scroll;
+}
+
 md-list {
     height: 550px;
     overflow-y: scroll;
