@@ -1,6 +1,3 @@
-body {
-}
-
 .page-header {
     text-align: center;
 }
@@ -29,24 +26,6 @@ ul {
 
 .task-done {
     text-decoration: line-through;
-}
-
-md-list {
-    height: 550px;
-    overflow-y: scroll;
-    border: 1px solid #ddd;
-}
-
-.md-datepicker-input {
-    display: none;
-}
-
-.md-datepicker-triangle-button {
-    display: none;
-}
-
-md-input-container .md-errors-spacer {
-    min-height: 0;
 }
 
 .footer {
