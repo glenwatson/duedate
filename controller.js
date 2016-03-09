@@ -67,14 +67,10 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         $scope.data.taskDateInput = null;
         $scope.data.taskInput = '';
         if (taskName) {
-            $window.gapi.client.request({
-                path: '/tasks/v1/lists/' + tasklistID + '/tasks',
-                method: 'POST',
-                body: {title: taskName, due: taskDueDate},
-                callback: function(resp) {
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
-                    $scope.tasklists[tasklistIndex].tasks.push(resp);
-                },
+            var parameters = {tasklist: tasklistID, title: taskName, due: taskDueDate};
+            $window.gapi.client.tasks.tasks.insert(parameters).execute(function(resp) {
+                var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
+                $scope.tasklists[tasklistIndex].tasks.push(resp.result);
             });
         }
     };
