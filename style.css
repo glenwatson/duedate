@@ -1,35 +1,35 @@
-body {
-}
-
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-header {
+.page-header {
     text-align: center;
-    padding: 20px 0;
 }
 
-md-list {
-    height: 550px;
+.btn {
+    text-align: left;
+}
+
+ul {
+    height: 500px;
     overflow-y: scroll;
-    border: 1px solid #ddd;
 }
 
-.md-datepicker-input {
-    display: none;
+#app-div{
+    margin: 20px 0;
 }
 
-.md-datepicker-triangle-button {
-    display: none;
+.task {
+    margin: 10px 0;
 }
 
-md-input-container .md-errors-spacer {
-    min-height: 0;
+.task-checkbox {
+    float: left;
+    width: 20px;
 }
 
-footer {
-    text-align: center;
+.task-done {
+    text-decoration: line-through;
+}
+
+.footer {
     padding: 20px 0;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
 }

@@ -2,25 +2,24 @@
 <html lang="en">
 <head>
 
-    <title>duedate</title>
-
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>duedate</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="style.css">
 
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-
-    <!-- Angular Material Dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-aria.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
 
     <script src="duedate.js"></script>
     <script src="controller.js"></script>
+
     <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
 
 </head>
@@ -28,78 +27,68 @@
 
     <div class="container">
 
-        <header>
+        <div class="page-header">
             <h1>duedate</h1>
-        </header>
+        </div>
 
-        <div id="authorize-div" style="display: none">
+        <div class="row" id="authorize-div" style="display: none">
             <span>Authorize access to Google Tasks API</span>
             <button id="authorize-button" onclick="duedate.handleAuthClick(event)">Authorize</button>
         </div>
 
-        <div id="app-div" style="display: none" layout="row" ng-controller="tasklistCtrl">
+        <div class="row" id="app-div" style="display: none" ng-controller="tasklistCtrl">
 
-            <div flex="30">
+            <div class="col-md-4">
 
-                <md-list ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
-                    <md-list-item class="md-2-line" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
-                        <div class="md-list-item-text">
-                            <h3>all</h3>
-                            <p>items: {{tasklistsTotal()}}</p>
-                        </div>
-                    </md-list-item>
-                    <md-list-item class="md-2-line secondary-button-padding" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
-                        <div class="md-list-item-text">
-                            <h3>{{tasklist.title}}</h3>
-                            <p>items: {{tasklist.tasks.length}}</p>
-                        </div>
-                        <md-button class="md-secondary" ng-click="tasklistsDelete(tasklist)" ng-if="tasklist.title!='tasks'">delete</md-button>
-                    </md-list-item>
-                </md-list>
+                <ul class="nav" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
+                    <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                        <h5>all <small>items: {{tasklistsTotal()}}</small></h5>
+                    </li>
+                    <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                        <button class="btn btn-default pull-right" ng-if="tasklist.title!='tasks'">
+                            <i class="fa fa-trash" ng-click="tasklistsDelete(tasklist)"></i>
+                        </button>
+                        <h5>{{tasklist.title}} <small>items: {{tasklist.tasks.length}}</small></h5>
+                    </li>
+                </ul>
 
                 <form ng-submit="tasklistsInsert(data.tasklistInput)">
-                    <md-input-container md-no-float class="md-block">
-                        <input ng-model="data.tasklistInput" placeholder="Add new tasklist">
-                    </md-input-container>
+                    <input type="text" class="form-control" ng-model="data.tasklistInput" placeholder="Add new tasklist">
                 </form>
 
             </div>
 
-            <div flex="70">
+            <div class="col-md-8">
 
-                <md-list>
+                <ul class="nav">
                     <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist || data.selectedTasklist=='all'">
-                        <md-list-item class="md-2-line secondary-button-padding" ng-repeat="task in tasklist.tasks | orderBy:'due'">
-                            <div class="md-list-item-text" style="padding-left: 20px">
-                                <md-checkbox ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksUpdateStatus(task)"></md-checkbox>
-                                <md-input-container md-no-float>
-                                    <input style="width:400px" ng-model="task.title" placeholder="Modify task name" ng-keyup="$event.keyCode == 13 && tasksUpdateName(task, task.title, $event)">
-                                    <p>{{task.due | date:'fullDate' : 'UTC'}}</p>
-                                </md-input-container>
+                        <li class="task" ng-repeat="task in tasklist.tasks | orderBy:'due'" ng-class="{'task-done': task.status == 'completed'}">
+                            <div class="task-checkbox">
+                                <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksUpdateStatus(task)">
                             </div>
-                            <div class="md-secondary">
-                                <md-datepicker ng-model="data.taskDateModify" md-placeholder="Modify due date" ng-change="tasksUpdateDate(task, data.taskDateModify)"></md-datepicker>
-                                <md-button class="md-icon-button" ng-click="tasksDelete(task)">
-                                    <md-icon>clear</md-icon>
-                                </md-button>
+                            <div class="task-title">
+                                <span>{{task.title}}</span>
+                                <button class="btn btn-default btn-xs pull-right">
+                                    <i class="fa fa-trash" ng-click="tasksDelete(task)"></i>
+                                </button>
+                                <button class="btn btn-default btn-xs pull-right" task-date>
+                                    <div ng-if="task.due">{{task.due | date:'fullDate' : 'UTC'}}</div>
+                                    <div ng-if="!task.due"><i class="fa fa-calendar"></i></div>
+                                </button>
                             </div>
-                        </md-list-item>
+                        </li>
                     </div>
-                </md-list>
+                </ul>
 
-                <form layout="row" class="md-inline-form">
-                    <md-input-container md-no-float flex>
-                        <input ng-model="data.taskInput" placeholder="Task name" ng-keyup="$event.keyCode == 13 && tasksInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">
-                    </md-input-container>
-                    <md-datepicker ng-model="data.taskDateInput" md-placeholder="Task due date"></md-datepicker>
-                    <div><md-button ng-click="tasksInsert(data.selectedTasklist, data.taskInput, data.taskDateInput)">Add Task</md-button></div>
+                <form ng-submit="tasksInsert(data.taskInput)">
+                    <input type="text" class="form-control" ng-model="data.taskInput" placeholder="Add new task">
                 </form>
 
             </div>
 
         </div>
 
-        <footer>
+        <footer class="footer">
             <p>© 2016 <a href="http://francisbergin.com">Francis Bergin</a></p>
         </footer>
 

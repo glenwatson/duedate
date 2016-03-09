@@ -1,4 +1,4 @@
-var duedateApp = angular.module('duedateApp', ['ngMaterial']);
+var duedateApp = angular.module('duedateApp', []);
 
 duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     setInterval(function() {
@@ -143,6 +143,14 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
                     console.log(resp);
                 }
             },
+        });
+    };
+});
+
+duedateApp.directive('taskDate', function() {
+    return function(scope, element, attrs) {
+        angular.element(element).datepicker({autoclose: true}).on('changeDate', function(e) {
+            scope.tasksUpdateDate(scope.task, e.date);
         });
     };
 });
