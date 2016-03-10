@@ -80,7 +80,7 @@
                     </div>
                 </ul>
 
-                <form ng-submit="tasksInsert(data.taskInput)">
+                <form ng-submit="tasksInsert(data.selectedTasklist, data.taskInput)">
                     <input type="text" class="form-control" ng-model="data.taskInput" placeholder="Add new task">
                 </form>
 

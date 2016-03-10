@@ -63,11 +63,10 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.tasksInsert = function(tasklistID, taskName, taskDueDate) {
-        $scope.data.taskDateInput = null;
+    $scope.tasksInsert = function(tasklistID, taskName) {
         $scope.data.taskInput = '';
         if (taskName) {
-            var parameters = {tasklist: tasklistID, title: taskName, due: taskDueDate};
+            var parameters = {tasklist: tasklistID, title: taskName};
             $window.gapi.client.tasks.tasks.insert(parameters).execute(function(resp) {
                 var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
                 $scope.tasklists[tasklistIndex].tasks.push(resp.result);
