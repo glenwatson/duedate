@@ -2,26 +2,29 @@
     text-align: center;
 }
 
-.btn {
-    text-align: left;
+.input-group-btn button {
+    border-radius: 0px;
 }
 
-ul {
+.input-group-addon {
+    border-radius: 0px;
+}
+
+.form-control {
+    border-radius: 0px;
+}
+
+.list {
     height: 500px;
     overflow-y: scroll;
 }
 
+.btn {
+    text-align: left;
+}
+
 #app-div{
     margin: 20px 0;
-}
-
-.task {
-    margin: 10px 0;
-}
-
-.task-checkbox {
-    float: left;
-    width: 20px;
 }
 
 .task-done {

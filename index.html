@@ -40,17 +40,19 @@
 
             <div class="col-md-4">
 
-                <ul class="nav" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
-                    <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
-                        <h5>all <small>items: {{tasklistsTotal()}}</small></h5>
-                    </li>
-                    <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
-                        <button class="btn btn-default pull-right" ng-if="tasklist.title!='tasks'" ng-click="tasklistsDelete(tasklist)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                        <h5>{{tasklist.title}} <small>items: {{tasklist.tasks.length}}</small></h5>
-                    </li>
-                </ul>
+                <div class="list">
+                    <ul class="nav" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
+                        <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                            <h5>all <small>items: {{tasklistsTotal()}}</small></h5>
+                        </li>
+                        <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                            <button class="btn btn-default pull-right" ng-if="tasklist.title!='tasks'" ng-click="tasklistsDelete(tasklist)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <h5>{{tasklist.title}} <small>items: {{tasklist.tasks.length}}</small></h5>
+                        </li>
+                    </ul>
+                </div>
 
                 <form ng-submit="tasklistsInsert(data.tasklistInput)">
                     <input type="text" class="form-control" ng-model="data.tasklistInput" placeholder="Add new tasklist">
@@ -60,25 +62,27 @@
 
             <div class="col-md-8">
 
-                <ul class="nav">
+                <div class="list">
                     <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist || data.selectedTasklist=='all'">
-                        <li class="task" ng-repeat="task in tasklist.tasks | orderBy:'due'" ng-class="{'task-done': task.status == 'completed'}">
-                            <div class="task-checkbox">
+                        <div class="input-group" ng-repeat="task in tasklist.tasks | orderBy:'due'">
+                            <span class="input-group-addon">
                                 <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksUpdateStatus(task)">
-                            </div>
-                            <div class="task-title">
-                                <span>{{task.title}}</span>
-                                <button class="btn btn-default btn-xs pull-right" ng-click="tasksDelete(task)">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                                <button class="btn btn-default btn-xs pull-right" task-date>
+                            </span>
+
+                            <input type="text" class="form-control" value="{{task.title}}" ng-class="{'task-done': task.status == 'completed'}">
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="button" task-date>
                                     <div ng-if="task.due">{{task.due | date:'fullDate' : 'UTC'}}</div>
                                     <div ng-if="!task.due"><i class="fa fa-calendar"></i></div>
                                 </button>
+                                <button class="btn btn-default" type="button" ng-click="tasksDelete(task)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
                             </div>
-                        </li>
+                        </div>
                     </div>
-                </ul>
+                </div>
 
                 <form ng-submit="tasksInsert(data.selectedTasklist, data.taskInput)">
                     <input type="text" class="form-control" ng-model="data.taskInput" placeholder="Add new task">
