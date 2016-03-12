@@ -73,7 +73,7 @@
 
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="button" task-date>
-                                    <div ng-if="task.due">{{task.due | date:'fullDate' : 'UTC'}}</div>
+                                    <div ng-if="task.due">{{daysFromNow(task.due) | abs}} days {{daysFromNow(task.due) < 0 ? "ago" : "from now"}}</div>
                                     <div ng-if="!task.due"><i class="fa fa-calendar"></i></div>
                                 </button>
                                 <button class="btn btn-default" type="button" ng-click="tasksDelete(task)">

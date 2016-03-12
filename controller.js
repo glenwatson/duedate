@@ -36,6 +36,18 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
     tasklistsList(null);
 
+    $scope.daysFromNow = function(date) {
+        var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+        date = new Date(date);
+        var now = new Date();
+
+        var utc1 = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+        var utc2 = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+
+        return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+    };
+
     $scope.tasklistsTotal = function() {
         return $scope.tasklists.reduce(function(a, b) {return a + b.tasks.length;}, 0);
     };
@@ -149,5 +161,11 @@ duedateApp.directive('taskDate', function() {
         angular.element(element).datepicker({autoclose: true}).on('changeDate', function(e) {
             scope.tasksUpdateDate(scope.task, e.date);
         });
+    };
+});
+
+duedateApp.filter('abs', function () {
+    return function(val) {
+        return Math.abs(val);
     };
 });
