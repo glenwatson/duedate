@@ -69,7 +69,7 @@
                                 <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksUpdateStatus(task)">
                             </span>
 
-                            <input type="text" class="form-control" value="{{task.title}}" ng-class="{'task-done': task.status == 'completed'}">
+                            <input type="text" class="form-control" ng-model="task.title" ng-class="{'task-done': task.status == 'completed'}" ng-keyup="$event.keyCode == 13 && tasksUpdateName(task)">
 
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="button" task-date>
