@@ -25,6 +25,10 @@
     text-decoration: line-through;
 }
 
+.task-late {
+    color: red;
+}
+
 .footer {
     padding: 20px 0;
     text-align: center;
