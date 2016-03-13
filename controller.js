@@ -164,7 +164,9 @@ duedateApp.directive('taskDate', function() {
             todayHighlight: true,
         });
 
-        angular.element(element).datepicker('setDate', (new Date(Date.parse(scope.task.due))).toLocaleDateString());
+        if ('due' in scope.task) {
+            angular.element(element).datepicker('setDate', (new Date(Date.parse(scope.task.due))).toLocaleDateString());
+        }
 
         angular.element(element).datepicker().on('changeDate', function(e) {
             scope.tasksUpdateDate(scope.task, e.date);
