@@ -160,6 +160,7 @@ duedateApp.directive('taskDate', function() {
     return function(scope, element, attrs) {
         angular.element(element).datepicker({
             autoclose: true,
+            clearBtn: true,
             todayHighlight: true,
         });
 
