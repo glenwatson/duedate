@@ -2,15 +2,9 @@
     text-align: center;
 }
 
+.form-control,
+.input-group-addon,
 .input-group-btn button {
-    border-radius: 0px;
-}
-
-.input-group-addon {
-    border-radius: 0px;
-}
-
-.form-control {
     border-radius: 0px;
 }
 
