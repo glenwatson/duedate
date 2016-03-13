@@ -158,7 +158,14 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
 duedateApp.directive('taskDate', function() {
     return function(scope, element, attrs) {
-        angular.element(element).datepicker({autoclose: true}).on('changeDate', function(e) {
+        angular.element(element).datepicker({
+            autoclose: true,
+            todayHighlight: true,
+        });
+
+        angular.element(element).datepicker('setDate', (new Date(Date.parse(scope.task.due))).toLocaleDateString());
+
+        angular.element(element).datepicker().on('changeDate', function(e) {
             scope.tasksUpdateDate(scope.task, e.date);
         });
     };
