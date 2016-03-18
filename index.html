@@ -72,7 +72,7 @@
                             <input type="text" class="form-control" ng-model="task.title" ng-class="{'task-done': task.status == 'completed'}" ng-keyup="$event.keyCode == 13 && tasksUpdateName(task)">
 
                             <div class="input-group-btn">
-                                <button class="btn btn-default task-date" type="button" ng-class="{'task-late': daysFromNow(task.due) < 0 && task.status == 'needsAction'}" task-date>
+                                <button class="btn btn-default" type="button" ng-class="{'task-late': daysFromNow(task.due) < 0 && task.status == 'needsAction'}" task-date>
                                     <div ng-if="task.due">{{daysFromNow(task.due) | abs}} days {{daysFromNow(task.due) < 0 ? "ago" : "from now"}}</div>
                                     <div ng-if="!task.due"><i class="fa fa-calendar"></i></div>
                                 </button>
