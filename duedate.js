@@ -17,7 +17,7 @@ duedate.handleAuthResult = function(authResult) {
         authorizeDiv.style.display = 'none';
         duedate.loadTasksApi();
     } else {
-        authorizeDiv.style.display = 'inline';
+        authorizeDiv.style.display = 'block';
     }
 };
 

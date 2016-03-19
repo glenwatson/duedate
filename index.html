@@ -31,8 +31,11 @@
         </div>
 
         <div class="row" id="authorize-div" style="display: none">
-            <span>Authorize access to Google Tasks API</span>
-            <button id="authorize-button" onclick="duedate.handleAuthClick(event)">Authorize</button>
+            <div class="text-center">
+                <button class="btn btn-default" onclick="duedate.handleAuthClick(event)">
+                    Authorize access to Google Tasks API
+                </button>
+            </div>
         </div>
 
         <div class="row" id="app-div" style="display: none" ng-controller="tasklistCtrl">
