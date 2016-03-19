@@ -41,10 +41,10 @@
 
                 <div class="list">
                     <ul class="nav" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
-                        <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-style="data.selectedTasklist=='all' ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                        <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-class="{'selected-tasklist': data.selectedTasklist=='all'}">
                             <h5>all <small>items: {{tasklistsTotal()}}</small></h5>
                         </li>
-                        <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-style="data.selectedTasklist==tasklist.id ? {'background-color':'#b7d1fa'} : {'background-color':'white'}">
+                        <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist.id" ng-repeat="tasklist in tasklists" ng-class="{'selected-tasklist': data.selectedTasklist==tasklist.id}">
                             <button class="btn btn-default pull-right" ng-if="tasklist.title!='tasks'" ng-click="tasklistsDelete(tasklist)">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>

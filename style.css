@@ -17,6 +17,10 @@
     text-align: left;
 }
 
+.selected-tasklist {
+    background-color: #b7d1fa;
+}
+
 .task-done {
     color: #888;
 }
