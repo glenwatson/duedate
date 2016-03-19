@@ -100,7 +100,8 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.tasksUpdateName = function(task) {
+    $scope.tasksUpdateName = function(task, event) {
+        event.target.blur();
         $window.gapi.client.request({
             path: task.selfLink,
             method: 'PUT',
