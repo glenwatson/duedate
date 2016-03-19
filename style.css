@@ -18,7 +18,7 @@
 }
 
 .task-done {
-    text-decoration: line-through;
+    color: #888;
 }
 
 .task-late {
