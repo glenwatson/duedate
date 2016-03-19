@@ -5,9 +5,9 @@ duedate.SCOPES = ['https://www.googleapis.com/auth/tasks'];
 
 function checkAuth() {
     gapi.auth.authorize({
-        'client_id': duedate.CLIENT_ID,
-        'scope': duedate.SCOPES.join(' '),
-        'immediate': true
+        client_id: duedate.CLIENT_ID,
+        scope: duedate.SCOPES.join(' '),
+        immediate: true
     }, duedate.handleAuthResult);
 }
 
