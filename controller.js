@@ -6,6 +6,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     }, 500);
 
     $scope.tasklists = [];
+    $scope.defaultTasklist = null;
 
     function tasksList(tasklist, pageToken) {
         var parameters = {pageToken: pageToken, tasklist: tasklist.id};
@@ -27,6 +28,9 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
                 tasklist.tasks = [];
                 tasksList(tasklist, null);
                 $scope.tasklists.push(tasklist);
+                if (tasklist.id === $scope.defaultTasklist) {
+                    $scope.defaultTasklist = tasklist;
+                }
             }
             if ('nextPageToken' in resp) {
                 tasklistsList(resp.nextPageToken);
@@ -34,7 +38,10 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     }
 
-    tasklistsList(null);
+    $window.gapi.client.tasks.tasklists.get({tasklist: '@default'}).then(function(response) {
+        $scope.defaultTasklist = response.result.id;
+        tasklistsList(null);
+    });
 
     $scope.daysFromNow = function(date) {
         var _MS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -75,13 +82,15 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 
-    $scope.tasksInsert = function(tasklistID, taskName) {
+    $scope.tasksInsert = function(tasklist, taskName) {
+        if (tasklist === 'all') {
+            tasklist = $scope.defaultTasklist;
+        }
         $scope.data.taskInput = '';
         if (taskName) {
-            var parameters = {tasklist: tasklistID, title: taskName};
+            var parameters = {tasklist: tasklist.id, title: taskName};
             $window.gapi.client.tasks.tasks.insert(parameters).execute(function(resp) {
-                var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
-                $scope.tasklists[tasklistIndex].tasks.push(resp.result);
+                tasklist.tasks.push(resp.result);
             });
         }
     };
