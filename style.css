@@ -17,10 +17,6 @@
     text-align: left;
 }
 
-#app-div{
-    margin: 20px 0;
-}
-
 .task-done {
     text-decoration: line-through;
 }
@@ -30,7 +26,8 @@
 }
 
 .footer {
-    padding: 20px 0;
+    padding-top: 15px;
+    margin: 20px 0 40px;
     text-align: center;
     border-top: 1px solid #e5e5e5;
 }
