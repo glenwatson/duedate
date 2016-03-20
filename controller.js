@@ -151,6 +151,30 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             },
         });
     };
+
+    /**
+    * Switches task from one tasklist to another.
+    *
+    * @param {Task} task
+    * @param {Tasklist} srcTasklist
+    * @param {Tasklist} dstTasklist
+    */
+    $scope.tasksUpdateTasklist = function(task, srcTasklist, dstTasklist) {
+        var parameters;
+
+        // delete the task from srcTasklist
+        parameters = {tasklist: srcTasklist.id, task: task.id};
+        $window.gapi.client.tasks.tasks.delete(parameters).then(function(response) {
+            var taskIndex = srcTasklist.tasks.map(function(e) {return e.id;}).indexOf(task.id);
+            srcTasklist.tasks.splice(taskIndex, 1);
+        });
+
+        // insert the task in dstTasklist
+        parameters = {tasklist: dstTasklist.id, title: task.title, status: task.status, due: task.due};
+        $window.gapi.client.tasks.tasks.insert(parameters).then(function(response) {
+            dstTasklist.tasks.push(response.result);
+        });
+    };
 });
 
 duedateApp.directive('taskDate', function() {
