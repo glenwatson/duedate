@@ -54,10 +54,46 @@
                             <h5>all <small>items: {{tasklistsTotal()}}</small></h5>
                         </li>
                         <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist" ng-repeat="tasklist in tasklists" ng-class="{'selected-tasklist': data.selectedTasklist.id==tasklist.id}">
-                            <button class="btn btn-default pull-right" ng-if="tasklist.id!=defaultTasklist.id" ng-click="tasklistsDelete(tasklist)">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
+
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-option-vertical"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="" data-toggle="modal" data-target="#{{tasklist.id}}">
+                                        <span class="glyphicon glyphicon-pencil"></span> rename
+                                    </a></li>
+                                    <li ng-if="tasklist.id!=defaultTasklist.id">
+                                        <a href="" ng-click="tasklistsDelete(tasklist)">
+                                            <span class="glyphicon glyphicon-trash"></span> delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <h5>{{tasklist.title}} <small>items: {{tasklist.tasks.length}}</small></h5>
+
+                            <div class="modal fade" id="{{tasklist.id}}" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                            <h4 class="modal-title">Rename tasklist name</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" ng-model="data.tasklistNewName" placeholder="{{tasklist.title}}">
+                                                    <span class="input-group-btn">
+                                                        <button type="submit" class="btn btn-default" data-dismiss="modal" ng-click="tasklistsUpdateName(tasklist, data.tasklistNewName)">Rename</button>
+                                                    </span>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </li>
                     </ul>
                 </div>
