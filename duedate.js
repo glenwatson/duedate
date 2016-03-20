@@ -1,7 +1,7 @@
 var duedateApp = angular.module('duedateApp', []);
 
 var init = function() {
-    window.checkAuth();
+    window.checkAuth(true);
 };
 
 duedateApp.controller('tasklistCtrl', function ($scope, $window) {
@@ -10,11 +10,11 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
     $scope.authenticated = undefined;
 
-    $window.checkAuth = function() {
+    $scope.checkAuth = $window.checkAuth = function(immediate) {
         $window.gapi.auth.authorize({
             client_id: CLIENT_ID,
             scope: SCOPE,
-            immediate: true
+            immediate: immediate
         }, handleAuthResult);
     };
 
@@ -25,14 +25,6 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         } else {
             $scope.authenticated = false;
         }
-    };
-
-    $scope.handleAuthClick = function() {
-        $window.gapi.auth.authorize({
-            client_id: CLIENT_ID,
-            scope: SCOPE,
-            immediate: false
-        }, handleAuthResult);
     };
 
     setInterval(function() {
