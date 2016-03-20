@@ -117,7 +117,11 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     };
 
     $scope.tasksUpdateDate = function(task, newTaskDate) {
-        task.due = newTaskDate.toISOString();
+        if (newTaskDate) {
+            task.due = newTaskDate.toISOString();
+        } else {
+            task.due = undefined;
+        }
         $window.gapi.client.request({
             path: task.selfLink,
             method: 'PUT',
