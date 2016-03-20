@@ -19,7 +19,7 @@
 
     <script src="controller.js"></script>
 
-    <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
 
 </head>
 <body ng-controller="tasklistCtrl">
@@ -32,7 +32,7 @@
 
         <div class="row" ng-show="authenticated==undefined">
             <div class="text-center">
-                <button class="btn btn-default" onclick="duedate.handleAuthClick(event)">
+                <button class="btn btn-default" ng-click="handleAuthClick()">
                     Authorize access to Google Tasks API
                 </button>
             </div>

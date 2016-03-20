@@ -1,6 +1,40 @@
 var duedateApp = angular.module('duedateApp', []);
 
+var init = function() {
+    window.checkAuth();
+};
+
 duedateApp.controller('tasklistCtrl', function ($scope, $window) {
+    var CLIENT_ID = '954795491695-9pop5kva3tg9ontq87j2lg7oc0fgrv69.apps.googleusercontent.com';
+    var SCOPE = 'https://www.googleapis.com/auth/tasks';
+
+    $scope.authenticated = undefined;
+
+    $window.checkAuth = function() {
+        $window.gapi.auth.authorize({
+            client_id: CLIENT_ID,
+            scope: SCOPE,
+            immediate: true
+        }, handleAuthResult);
+    };
+
+    var handleAuthResult = function(authResult) {
+        if (authResult && !authResult.error) {
+            $scope.authenticated = true;
+            $window.gapi.client.load('tasks', 'v1', postInitiation);
+        } else {
+            $scope.authenticated = false;
+        }
+    };
+
+    $scope.handleAuthClick = function() {
+        $window.gapi.auth.authorize({
+            client_id: CLIENT_ID,
+            scope: SCOPE,
+            immediate: false
+        }, handleAuthResult);
+    };
+
     setInterval(function() {
         $scope.$apply();
     }, 500);
@@ -38,10 +72,12 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     }
 
-    $window.gapi.client.tasks.tasklists.get({tasklist: '@default'}).then(function(response) {
-        $scope.defaultTasklist = response.result.id;
-        tasklistsList(null);
-    });
+    var postInitiation = function() {
+        $window.gapi.client.tasks.tasklists.get({tasklist: '@default'}).then(function(response) {
+            $scope.defaultTasklist = response.result.id;
+            tasklistsList(null);
+        });
+    };
 
     /**
     * Returns the tasklist ID from a task selfLink
