@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="duedateApp">
 <head>
 
     <meta charset="utf-8">
@@ -22,7 +22,7 @@
     <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
 
 </head>
-<body>
+<body ng-controller="tasklistCtrl">
 
     <div class="container">
 
@@ -30,7 +30,7 @@
             <h1>duedate</h1>
         </div>
 
-        <div class="row" id="authorize-div" style="display: none">
+        <div class="row" ng-show="authenticated==undefined">
             <div class="text-center">
                 <button class="btn btn-default" onclick="duedate.handleAuthClick(event)">
                     Authorize access to Google Tasks API
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="row" id="app-div" style="display: none" ng-controller="tasklistCtrl">
+        <div class="row" ng-show="authenticated==true">
 
             <div class="col-md-4">
 
