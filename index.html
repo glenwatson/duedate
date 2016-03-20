@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="duedateApp">
 <head>
 
     <meta charset="utf-8">
@@ -17,13 +17,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
 
-    <script src="duedate.js"></script>
     <script src="controller.js"></script>
 
-    <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
 
 </head>
-<body>
+<body ng-controller="tasklistCtrl">
 
     <div class="container">
 
@@ -31,15 +30,21 @@
             <h1>duedate</h1>
         </div>
 
-        <div class="row" id="authorize-div" style="display: none">
+        <div class="row" ng-show="authenticated==undefined">
             <div class="text-center">
-                <button class="btn btn-default" onclick="duedate.handleAuthClick(event)">
+                <span class="glyphicon glyphicon-refresh"></span>
+            </div>
+        </div>
+
+        <div class="row" ng-show="authenticated==false">
+            <div class="text-center">
+                <button class="btn btn-default" ng-click="handleAuthClick()">
                     Authorize access to Google Tasks API
                 </button>
             </div>
         </div>
 
-        <div class="row" id="app-div" style="display: none" ng-controller="tasklistCtrl">
+        <div class="row" ng-show="authenticated==true">
 
             <div class="col-md-4">
 
