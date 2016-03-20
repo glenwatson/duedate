@@ -43,6 +43,22 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         tasklistsList(null);
     });
 
+    /**
+    * Returns the tasklist ID from a task selfLink
+    *
+    * @param {String} selfLink
+    * @return {String} tasklistID
+    */
+    function getTasklistID(taskSelfLink) {
+        var tasklistID = /\/lists\/(.*)\/tasks\//.exec(taskSelfLink);
+
+        if (tasklistID) {
+            return tasklistID[1];
+        }
+
+        return tasklistID;
+    }
+
     $scope.tasklistsTotal = function() {
         return $scope.tasklists.reduce(function(a, b) {return a + b.tasks.length;}, 0);
     };
