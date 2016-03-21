@@ -96,7 +96,15 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
     $scope.isTaskInTasklist = function(tasklist) {
         return function(task) {
-            return tasklist === 'all' || tasklist.id === $scope.getTasklistID(task);
+            if (!task.deleted && tasklist === 'all') {
+                return true;
+            } else if (!task.deleted && tasklist.id === $scope.getTasklistID(task)) {
+                return true;
+            } else if (task.deleted && tasklist === 'trash') {
+                return true;
+            } else {
+                return false;
+            }
         };
     };
 
