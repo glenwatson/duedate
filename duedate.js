@@ -32,14 +32,15 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     }, 500);
 
     $scope.tasklists = [];
-    $scope.defaultTasklist = null;
+    $scope.tasks = [];
+    $scope.defaultTasklistID = null;
 
     function tasksList(tasklist, pageToken) {
         var parameters = {pageToken: pageToken, tasklist: tasklist.id};
         $window.gapi.client.tasks.tasks.list(parameters).then(function(response) {
-            for (var i in response.result.items) {
-                tasklist.tasks.push(response.result.items[i]);
-            }
+            response.result.items.forEach(function(element) {
+                $scope.tasks.push(element);
+            });
             if ('nextPageToken' in response.result) {
                 tasksList(tasklist, response.result.nextPageToken);
             }
@@ -49,15 +50,10 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     function tasklistsList(pageToken) {
         var parameters = {pageToken: pageToken};
         $window.gapi.client.tasks.tasklists.list(parameters).then(function(response) {
-            for (var i in response.result.items) {
-                var tasklist = response.result.items[i];
-                tasklist.tasks = [];
-                tasksList(tasklist, null);
-                $scope.tasklists.push(tasklist);
-                if (tasklist.id === $scope.defaultTasklist) {
-                    $scope.defaultTasklist = tasklist;
-                }
-            }
+            response.result.items.forEach(function(element) {
+                $scope.tasklists.push(element);
+                tasksList(element, null);
+            });
             if ('nextPageToken' in response.result) {
                 tasklistsList(response.result.nextPageToken);
             }
@@ -66,7 +62,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
     var postInitiation = function() {
         $window.gapi.client.tasks.tasklists.get({tasklist: '@default'}).then(function(response) {
-            $scope.defaultTasklist = response.result.id;
+            $scope.defaultTasklistID = response.result.id;
             tasklistsList(null);
         });
     };
