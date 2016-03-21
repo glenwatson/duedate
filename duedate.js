@@ -36,21 +36,21 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
     function tasksList(tasklist, pageToken) {
         var parameters = {pageToken: pageToken, tasklist: tasklist.id};
-        $window.gapi.client.tasks.tasks.list(parameters).execute(function(resp) {
-            for (var i in resp.items) {
-                tasklist.tasks.push(resp.items[i]);
+        $window.gapi.client.tasks.tasks.list(parameters).then(function(response) {
+            for (var i in response.result.items) {
+                tasklist.tasks.push(response.result.items[i]);
             }
-            if ('nextPageToken' in resp) {
-                tasksList(tasklist, resp.nextPageToken);
+            if ('nextPageToken' in response.result) {
+                tasksList(tasklist, response.result.nextPageToken);
             }
         });
     }
 
     function tasklistsList(pageToken) {
         var parameters = {pageToken: pageToken};
-        $window.gapi.client.tasks.tasklists.list(parameters).execute(function(resp) {
-            for (var i in resp.items) {
-                var tasklist = resp.items[i];
+        $window.gapi.client.tasks.tasklists.list(parameters).then(function(response) {
+            for (var i in response.result.items) {
+                var tasklist = response.result.items[i];
                 tasklist.tasks = [];
                 tasksList(tasklist, null);
                 $scope.tasklists.push(tasklist);
@@ -58,8 +58,8 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
                     $scope.defaultTasklist = tasklist;
                 }
             }
-            if ('nextPageToken' in resp) {
-                tasklistsList(resp.nextPageToken);
+            if ('nextPageToken' in response.result) {
+                tasklistsList(response.result.nextPageToken);
             }
         });
     }
