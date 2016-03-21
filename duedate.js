@@ -83,9 +83,18 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         return tasklistID;
     };
 
+    $scope.getTasklistTitle = function(task) {
+        var tasklistID = $scope.getTasklistID(task);
+        for (var i=0; i<$scope.tasklists.length; i++) {
+            if ($scope.tasklists[i].id === tasklistID) {
+                return $scope.tasklists[i].title;
+            }
+        }
+    };
+
     $scope.isTaskInTasklist = function(tasklist) {
         return function(task) {
-            return tasklist.id == $scope.getTasklistID(task);
+            return tasklist === 'all' || tasklist.id === $scope.getTasklistID(task);
         };
     };
 

@@ -107,31 +107,29 @@
             <div class="col-md-8">
 
                 <div class="list">
-                    <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist.id || data.selectedTasklist=='all'">
-                        <div class="input-group" ng-repeat="task in tasklist.tasks | orderBy:'due'">
-                            <span class="input-group-addon">
-                                <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksUpdateStatus(task)">
-                            </span>
+                    <div class="input-group" ng-repeat="task in tasks | filter: isTaskInTasklist(data.selectedTasklist) | orderBy:'due'">
+                        <span class="input-group-addon">
+                            <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksUpdateStatus(task)">
+                        </span>
 
-                            <input type="text" class="form-control" ng-model="task.title" ng-class="{'task-done': task.status == 'completed'}" ng-keyup="$event.keyCode == 13 && tasksUpdateName(task, $event)">
+                        <input type="text" class="form-control" ng-model="task.title" ng-class="{'task-done': task.status == 'completed'}" ng-keyup="$event.keyCode == 13 && tasksUpdateName(task, $event)">
 
-                            <div class="input-group-btn">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{tasklist.title}}</button>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li ng-repeat="newtasklist in tasklists">
-                                            <a href="" ng-click="tasksUpdateTasklist(task, tasklist, newtasklist)">{{newtasklist.title}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <button class="btn btn-default" type="button" task-date>
-                                    <div ng-if="task.due">{{task.due | date:'fullDate':'+0'}}</div>
-                                    <div ng-if="!task.due"><span class="glyphicon glyphicon-calendar"></span></div>
-                                </button>
-                                <button class="btn btn-default" type="button" ng-click="tasksDelete(task)">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
+                        <div class="input-group-btn">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{getTasklistTitle(task)}}</button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li ng-repeat="tasklist in tasklists">
+                                        <a href="" ng-click="tasksUpdateTasklist(task, data.selectedTasklist, tasklist)">{{tasklist.title}}</a>
+                                    </li>
+                                </ul>
                             </div>
+                            <button class="btn btn-default" type="button" task-date>
+                                <div ng-if="task.due">{{task.due | date:'fullDate':'+0'}}</div>
+                                <div ng-if="!task.due"><span class="glyphicon glyphicon-calendar"></span></div>
+                            </button>
+                            <button class="btn btn-default" type="button" ng-click="tasksDelete(task)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
