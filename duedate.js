@@ -115,22 +115,16 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     };
 
     /**
-    * Updates the name of a tasklist
+    * Patches the name of a tasklist
     *
     * @param {Tasklist} tasklist
     * @param {String} tasklistNewName
     */
-    $scope.tasklistsUpdateName = function(tasklist, tasklistNewName) {
+    $scope.tasklistsPatchName = function(tasklist, tasklistNewName) {
         $scope.data.tasklistNewName = '';
 
-        // prepare tasklist to be sent without its tasks
-        var newTasklist = $.extend(true, {}, tasklist);
-        delete newTasklist.tasks;
-        newTasklist.title = tasklistNewName;
-        newTasklist.tasklist = newTasklist.id;
-
-        var parameters = newTasklist;
-        $window.gapi.client.tasks.tasklists.update(parameters).then(function(response) {
+        var parameters = {tasklist: tasklist.id, title: tasklistNewName};
+        $window.gapi.client.tasks.tasklists.patch(parameters).then(function(response) {
             tasklist.title = response.result.title;
         });
     };
