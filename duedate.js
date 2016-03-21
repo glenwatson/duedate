@@ -115,15 +115,15 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     };
 
     /**
-    * Patches the name of a tasklist
+    * Patches the title of a tasklist
     *
     * @param {Tasklist} tasklist
     * @param {String} tasklistNewName
     */
-    $scope.tasklistsPatchName = function(tasklist, tasklistNewName) {
-        $scope.data.tasklistNewName = '';
+    $scope.tasklistsPatchTitle = function(tasklist, tasklistNewTitle) {
+        $scope.data.tasklistNewTitle = '';
 
-        var parameters = {tasklist: tasklist.id, title: tasklistNewName};
+        var parameters = {tasklist: tasklist.id, title: tasklistNewTitle};
         $window.gapi.client.tasks.tasklists.patch(parameters).then(function(response) {
             tasklist.title = response.result.title;
         });
