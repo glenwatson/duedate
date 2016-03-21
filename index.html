@@ -51,7 +51,7 @@
                 <div class="list">
                     <ul class="nav" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
                         <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-class="{'selected-tasklist': data.selectedTasklist=='all'}">
-                            <h5>all <small>items: {{tasklistsTotal()}}</small></h5>
+                            <h5>all <small>items: {{tasks.length}}</small></h5>
                         </li>
                         <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist" ng-repeat="tasklist in tasklists" ng-class="{'selected-tasklist': data.selectedTasklist.id==tasklist.id}">
 
@@ -71,7 +71,7 @@
                                 </ul>
                             </div>
 
-                            <h5>{{tasklist.title}} <small>items: {{tasklist.tasks.length}}</small></h5>
+                            <h5>{{tasklist.title}} <small>items: {{(tasks|filter:isTaskInTasklist(tasklist)).length}}</small></h5>
 
                             <div class="modal fade" id="{{tasklist.id}}" role="dialog">
                                 <div class="modal-dialog" role="document">
