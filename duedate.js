@@ -36,7 +36,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     $scope.defaultTasklistID = null;
 
     function tasksList(tasklist, pageToken) {
-        var parameters = {pageToken: pageToken, tasklist: tasklist.id};
+        var parameters = {pageToken: pageToken, tasklist: tasklist.id, showDeleted: true};
         $window.gapi.client.tasks.tasks.list(parameters).then(function(response) {
             if ('items' in response.result) {
                 response.result.items.forEach(function(element) {
