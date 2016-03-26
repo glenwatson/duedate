@@ -132,6 +132,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
                     i--;
                 }
             }
+            $scope.data.selectedTasklist = 'all';
             $scope.tasklists.splice($scope.tasklists.indexOf(tasklist), 1);
         });
     };
