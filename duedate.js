@@ -173,7 +173,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     $scope.tasksDelete = function(task) {
         var parameters = {tasklist: $scope.taskTasklist(task).id, task: task.id};
         $window.gapi.client.tasks.tasks.delete(parameters).then(function(response) {
-            $scope.tasks.splice($scope.tasks.indexOf(task), 1);
+            task.deleted = true;
         });
     };
 
