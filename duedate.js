@@ -126,6 +126,12 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     $scope.tasklistsDelete = function(tasklist) {
         var parameters = {tasklist: tasklist.id};
         $window.gapi.client.tasks.tasklists.delete(parameters).then(function(response) {
+            for (var i=0; i<$scope.tasks.length; i++) {
+                if (tasklist === $scope.taskTasklist($scope.tasks[i])) {
+                    $scope.tasks.splice(i, 1);
+                    i--;
+                }
+            }
             $scope.tasklists.splice($scope.tasklists.indexOf(tasklist), 1);
         });
     };
