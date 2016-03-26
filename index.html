@@ -54,7 +54,7 @@
                         <span>all | <small>{{(tasks|filter:isTaskInTasklist('all')).length}}</small></span>
                     </a>
 
-                    <a href="" class="list-group-item" ng-class="{'active': data.selectedTasklist.id==tasklist.id}" ng-click="data.selectedTasklist=tasklist" ng-repeat="tasklist in tasklists">
+                    <a href="" class="list-group-item" ng-class="{'active': data.selectedTasklist.id==tasklist.id}" ng-click="data.selectedTasklist=tasklist" ng-repeat="tasklist in tasklists | orderBy:'title'"">
                         <span>{{tasklist.title}} | <small>{{(tasks|filter:isTaskInTasklist(tasklist)).length}}</small></span>
                         <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#{{tasklist.id}}">
                             <span class="glyphicon glyphicon-option-vertical"></span>
