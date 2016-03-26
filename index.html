@@ -105,9 +105,9 @@
 
                         <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksPatchStatus(task)">
 
-                        <span class="task-title">{{task.title}}</span>
+                        <span class="task-tasklist-title" ng-if="data.selectedTasklist==='all'||data.selectedTasklist==='trash'"><small>{{taskTasklist(task).title}} : </small></span>
 
-                        <span class="task-tasklist-title"><small>{{taskTasklist(task).title}}</small></span>
+                        <span class="task-title">{{task.title}}</span>
 
                         <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#{{task.id}}">
                             <span class="glyphicon glyphicon-option-vertical"></span>
