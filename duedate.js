@@ -178,6 +178,18 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     };
 
     /**
+    * UnDeletes a task
+    *
+    * @param {Task} task
+    */
+    $scope.tasksUnDelete = function(task) {
+        var parameters = {tasklist: $scope.taskTasklist(task).id, task: task.id, deleted: false};
+        $window.gapi.client.tasks.tasks.patch(parameters).then(function(response) {
+            task.deleted = response.result.deleted;
+        });
+    };
+
+    /**
     * Patches the status of a task
     *
     * @param {Task} task
