@@ -101,7 +101,7 @@
 
                 <div class="list-group">
 
-                    <div class="list-group-item" ng-repeat="task in tasks | filter: isTaskInTasklist(data.selectedTasklist) | orderBy:'due'" ng-class="{'task-done': task.status == 'completed'}">
+                    <div class="list-group-item" ng-repeat="task in tasks | filter: isTaskInTasklist(data.selectedTasklist) | orderBy:['-status', 'due']" ng-class="{'task-done': task.status == 'completed'}">
 
                         <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksPatchStatus(task)">
 
