@@ -32,13 +32,16 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     }, 500);
 
     $scope.tasklists = [];
-    $scope.defaultTasklist = null;
+    $scope.tasks = [];
+    $scope.defaultTasklistID = null;
 
     function tasksList(tasklist, pageToken) {
-        var parameters = {pageToken: pageToken, tasklist: tasklist.id};
+        var parameters = {pageToken: pageToken, tasklist: tasklist.id, showDeleted: true};
         $window.gapi.client.tasks.tasks.list(parameters).then(function(response) {
-            for (var i in response.result.items) {
-                tasklist.tasks.push(response.result.items[i]);
+            if ('items' in response.result) {
+                response.result.items.forEach(function(element) {
+                    $scope.tasks.push(element);
+                });
             }
             if ('nextPageToken' in response.result) {
                 tasksList(tasklist, response.result.nextPageToken);
@@ -49,15 +52,10 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     function tasklistsList(pageToken) {
         var parameters = {pageToken: pageToken};
         $window.gapi.client.tasks.tasklists.list(parameters).then(function(response) {
-            for (var i in response.result.items) {
-                var tasklist = response.result.items[i];
-                tasklist.tasks = [];
-                tasksList(tasklist, null);
-                $scope.tasklists.push(tasklist);
-                if (tasklist.id === $scope.defaultTasklist) {
-                    $scope.defaultTasklist = tasklist;
-                }
-            }
+            response.result.items.forEach(function(element) {
+                $scope.tasklists.push(element);
+                tasksList(element, null);
+            });
             if ('nextPageToken' in response.result) {
                 tasklistsList(response.result.nextPageToken);
             }
@@ -66,51 +64,69 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
     var postInitiation = function() {
         $window.gapi.client.tasks.tasklists.get({tasklist: '@default'}).then(function(response) {
-            $scope.defaultTasklist = response.result.id;
+            $scope.defaultTasklistID = response.result.id;
             tasklistsList(null);
         });
     };
 
     /**
-    * Returns the tasklist ID from a task selfLink
+    * Return a Tasklist object which contains the specified task
     *
-    * @param {String} selfLink
-    * @return {String} tasklistID
+    * @param {Task} task
+    * @return {Tasklist}
     */
-    function getTasklistID(taskSelfLink) {
-        var tasklistID = /\/lists\/(.*)\/tasks\//.exec(taskSelfLink);
-
-        if (tasklistID) {
-            return tasklistID[1];
+    $scope.taskTasklist = function(task) {
+        var tasklistID = /\/lists\/(.*)\/tasks\//.exec(task.selfLink)[1];
+        for (var i=0; i<$scope.tasklists.length; i++) {
+            if ($scope.tasklists[i].id === tasklistID) {
+                return $scope.tasklists[i];
+            }
         }
-
-        return tasklistID;
-    }
-
-    $scope.tasklistsTotal = function() {
-        return $scope.tasklists.reduce(function(a, b) {return a + b.tasks.length;}, 0);
     };
 
-    $scope.tasklistsInsert = function(tasklistName) {
+    /**
+    * Used to filter out tasks that are not in specified tasklist
+    *
+    * @param {Tasklist} tasklist
+    */
+    $scope.isTaskInTasklist = function(tasklist) {
+        return function(task) {
+            if (!task.deleted && tasklist === 'all') {
+                return true;
+            } else if (!task.deleted && tasklist.id === $scope.taskTasklist(task).id) {
+                return true;
+            } else if (task.deleted && tasklist === 'trash') {
+                return true;
+            } else {
+                return false;
+            }
+        };
+    };
+
+    /**
+    * Inserts a new tasklist
+    *
+    * @param {String} tasklistTitle
+    */
+    $scope.tasklistsInsert = function(tasklistTitle) {
         $scope.data.tasklistInput = '';
-        if (tasklistName) {
-            $window.gapi.client.tasks.tasklists.insert({
-                title: tasklistName,
-            }).execute(function(resp) {
-                resp.result.tasks = [];
-                $scope.tasklists.push(resp.result);
+        if (tasklistTitle) {
+            var parameters = {title: tasklistTitle};
+            $window.gapi.client.tasks.tasklists.insert(parameters).then(function(response) {
+                $scope.tasklists.push(response.result);
             });
         }
     };
 
+    /**
+    * Deletes a tasklist
+    *
+    * @param {Tasklist} tasklist
+    */
     $scope.tasklistsDelete = function(tasklist) {
         var parameters = {tasklist: tasklist.id};
-        $window.gapi.client.tasks.tasklists.delete(parameters).execute(function(resp) {
-            if (resp) {
-                $scope.tasklists.splice($scope.tasklists.indexOf(tasklist), 1);
-            } else {
-                console.log(resp);
-            }
+        $window.gapi.client.tasks.tasklists.delete(parameters).then(function(response) {
+            $scope.tasklists.splice($scope.tasklists.indexOf(tasklist), 1);
         });
     };
 
@@ -121,140 +137,121 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
     * @param {String} tasklistNewName
     */
     $scope.tasklistsPatchTitle = function(tasklist, tasklistNewTitle) {
-        $scope.data.tasklistNewTitle = '';
-
         var parameters = {tasklist: tasklist.id, title: tasklistNewTitle};
         $window.gapi.client.tasks.tasklists.patch(parameters).then(function(response) {
             tasklist.title = response.result.title;
         });
     };
 
-    $scope.tasksInsert = function(tasklist, taskName) {
-        if (tasklist === 'all') {
-            tasklist = $scope.defaultTasklist;
-        }
+    /**
+    * Inserts a new task
+    *
+    * @param {Tasklist} tasklist
+    * @param {String} taskTitle
+    */
+    $scope.tasksInsert = function(tasklist, taskTitle) {
         $scope.data.taskInput = '';
-        if (taskName) {
-            var parameters = {tasklist: tasklist.id, title: taskName};
-            $window.gapi.client.tasks.tasks.insert(parameters).execute(function(resp) {
-                tasklist.tasks.push(resp.result);
+
+        if (taskTitle) {
+            var parameters = {title: taskTitle};
+            if (tasklist.id) {
+                parameters.tasklist = tasklist.id;
+            } else {
+                parameters.tasklist = '@default';
+            }
+            $window.gapi.client.tasks.tasks.insert(parameters).then(function(response) {
+                $scope.tasks.push(response.result);
             });
         }
     };
 
+    /**
+    * Deletes a task
+    *
+    * @param {Task} task
+    */
     $scope.tasksDelete = function(task) {
-        $window.gapi.client.request({
-            path: task.selfLink,
-            method: 'DELETE',
-            callback: function(resp) {
-                if (!resp) {
-                    var tasklistID = /lists\/(.*)\/tasks/.exec(task.selfLink)[1];
-                    var tasklistIndex = $scope.tasklists.map(function(e) {return e.id;}).indexOf(tasklistID);
-                    var taskIndex = $scope.tasklists[tasklistIndex].tasks.map(function(e) {return e.id;}).indexOf(task.id);
-                    $scope.tasklists[tasklistIndex].tasks.splice(taskIndex, 1);
-                } else {
-                    console.log(resp);
-                }
-            },
-        });
-    };
-
-    $scope.tasksUpdateName = function(task, event) {
-        event.target.blur();
-        $window.gapi.client.request({
-            path: task.selfLink,
-            method: 'PUT',
-            body: task,
-            callback: function(resp) {
-                if (resp) {
-                    task = resp;
-                } else {
-                    console.log(resp);
-                }
-            },
-        });
-    };
-
-    $scope.tasksUpdateDate = function(task, newTaskDate) {
-        if (newTaskDate) {
-            task.due = newTaskDate.toISOString();
-        } else {
-            task.due = undefined;
-        }
-        $window.gapi.client.request({
-            path: task.selfLink,
-            method: 'PUT',
-            body: task,
-            callback: function(resp) {
-                if (resp) {
-                    task = resp;
-                } else {
-                    console.log(resp);
-                }
-            },
-        });
-    };
-
-    $scope.tasksUpdateStatus = function(task) {
-        if (task.status == 'completed') {
-            task.completed = (new Date()).toISOString();
-        } else {
-            task.completed = undefined;
-        }
-        $window.gapi.client.request({
-            path: task.selfLink,
-            method: 'PUT',
-            body: task,
-            callback: function(resp) {
-                if (resp) {
-                    task = resp;
-                } else {
-                    console.log(resp);
-                }
-            },
+        var parameters = {tasklist: $scope.taskTasklist(task).id, task: task.id};
+        $window.gapi.client.tasks.tasks.delete(parameters).then(function(response) {
+            $scope.tasks.splice($scope.tasks.indexOf(task), 1);
         });
     };
 
     /**
-    * Switches task from one tasklist to another.
+    * Patches the status of a task
     *
     * @param {Task} task
-    * @param {Tasklist} srcTasklist
+    */
+    $scope.tasksPatchStatus = function(task) {
+        var parameters = {tasklist: $scope.taskTasklist(task).id, task: task.id};
+
+        if (task.status === 'completed') {
+            parameters.completed = (new Date()).toISOString();
+            parameters.status = 'completed';
+        } else {
+            parameters.completed = null;
+            parameters.status = 'needsAction';
+        }
+
+        $window.gapi.client.tasks.tasks.patch(parameters).then(function(response) {
+            task.completed = response.result.completed;
+            task.status = response.result.status;
+        });
+    };
+
+    /**
+    * Patches multiple parameters of a task
+    *
+    * @param {Task} task
+    * @param {String} taskNewTitle
+    * @param {Tasklist} taskNewTasklist
+    * @param {String} taskNewNotes
+    * @param {String} taskNewDate
+    */
+    $scope.tasksPatch = function(task, taskNewTitle, taskNewTasklist, taskNewNotes, taskNewDate) {
+        var parameters = {
+            tasklist: $scope.taskTasklist(task).id,
+            task: task.id,
+            title: taskNewTitle,
+            notes: taskNewNotes || null,
+        };
+        if (taskNewDate) {
+            var date = new Date(Date.parse(taskNewDate));
+            parameters.due = (new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))).toISOString();
+        } else {
+            parameters.due = null;
+        }
+        $window.gapi.client.tasks.tasks.patch(parameters).then(function(response) {
+            task.title = response.result.title;
+            task.notes = response.result.notes;
+            task.due = response.result.due;
+            if (taskNewTasklist !== $scope.taskTasklist(task)) {
+                $scope.tasksModifyTasklist(task, taskNewTasklist);
+            }
+        });
+    };
+
+    /**
+    * Move task from one tasklist to another
+    *
+    * @param {Task} task
     * @param {Tasklist} dstTasklist
     */
-    $scope.tasksUpdateTasklist = function(task, srcTasklist, dstTasklist) {
+    $scope.tasksModifyTasklist = function(task, dstTasklist) {
         var parameters;
 
         // delete the task from srcTasklist
-        parameters = {tasklist: srcTasklist.id, task: task.id};
+        parameters = {tasklist: $scope.taskTasklist(task).id, task: task.id};
         $window.gapi.client.tasks.tasks.delete(parameters).then(function(response) {
-            var taskIndex = srcTasklist.tasks.map(function(e) {return e.id;}).indexOf(task.id);
-            srcTasklist.tasks.splice(taskIndex, 1);
+            $scope.tasks.splice($scope.tasks.indexOf(task), 1);
         });
 
         // insert the task in dstTasklist
-        parameters = {tasklist: dstTasklist.id, title: task.title, status: task.status, due: task.due};
+        parameters = $.extend({tasklist: dstTasklist.id}, task);
+        parameters.id = undefined;
+        parameters.selfLink = undefined;
         $window.gapi.client.tasks.tasks.insert(parameters).then(function(response) {
-            dstTasklist.tasks.push(response.result);
-        });
-    };
-});
-
-duedateApp.directive('taskDate', function() {
-    return function(scope, element, attrs) {
-        angular.element(element).datepicker({
-            autoclose: true,
-            clearBtn: true,
-            orientation: 'right',
-            todayHighlight: true,
-        });
-
-        if ('due' in scope.task) {
-            angular.element(element).datepicker('setUTCDate', new Date(Date.parse(scope.task.due)));
-        }
-
-        angular.element(element).datepicker().on('changeDate', function(e) {
-            scope.tasksUpdateDate(scope.task, e.date);
+            $scope.tasks.push(response.result);
         });
     };
 });

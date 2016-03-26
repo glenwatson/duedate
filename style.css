@@ -25,27 +25,21 @@
     text-align: center;
 }
 
-.form-control,
-.input-group-addon,
-.input-group-btn button {
-    border-radius: 0px;
+.task-title {
+    padding-left: 10px;
 }
 
-.input-group-btn:last-child>.btn-group.open {
-    z-index: 500;
+.task-tasklist-title {
+    padding-left: 30px;
 }
 
-.list {
+.task-due-date {
+    padding-right: 30px;
+}
+
+.list-group {
     height: 500px;
     overflow-y: scroll;
-}
-
-.btn {
-    text-align: left;
-}
-
-.selected-tasklist {
-    background-color: #b7d1fa;
 }
 
 .task-done {

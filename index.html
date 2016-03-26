@@ -26,9 +26,9 @@
 
     <div class="container">
 
-        <div class="page-header">
+        <header class="page-header">
             <h1>duedate</h1>
-        </div>
+        </header>
 
         <div class="row" ng-show="authenticated==undefined">
             <div class="text-center">
@@ -48,54 +48,47 @@
 
             <div class="col-md-4">
 
-                <div class="list">
-                    <ul class="nav" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
-                        <li class="btn btn-block" ng-click="data.selectedTasklist='all'" ng-class="{'selected-tasklist': data.selectedTasklist=='all'}">
-                            <h5>all <small>items: {{tasklistsTotal()}}</small></h5>
-                        </li>
-                        <li class="btn btn-block" ng-click="data.selectedTasklist=tasklist" ng-repeat="tasklist in tasklists" ng-class="{'selected-tasklist': data.selectedTasklist.id==tasklist.id}">
+                <div class="list-group" ng-model="data.selectedTasklist" ng-init="data.selectedTasklist='all'">
 
-                            <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    <span class="glyphicon glyphicon-option-vertical"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="" data-toggle="modal" data-target="#{{tasklist.id}}">
-                                        <span class="glyphicon glyphicon-pencil"></span> rename
-                                    </a></li>
-                                    <li ng-if="tasklist.id!=defaultTasklist.id">
-                                        <a href="" ng-click="tasklistsDelete(tasklist)">
-                                            <span class="glyphicon glyphicon-trash"></span> delete
-                                        </a>
-                                    </li>
-                                </ul>
+                    <a href="" class="list-group-item" ng-class="{'active': data.selectedTasklist=='all'}" ng-click="data.selectedTasklist='all'">
+                        <span>all | <small>{{(tasks|filter:isTaskInTasklist('all')).length}}</small></span>
+                    </a>
+
+                    <a href="" class="list-group-item" ng-class="{'active': data.selectedTasklist.id==tasklist.id}" ng-click="data.selectedTasklist=tasklist" ng-repeat="tasklist in tasklists">
+                        <span>{{tasklist.title}} | <small>{{(tasks|filter:isTaskInTasklist(tasklist)).length}}</small></span>
+                        <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#{{tasklist.id}}">
+                            <span class="glyphicon glyphicon-option-vertical"></span>
+                        </button>
+                    </a>
+
+                    <a href="" class="list-group-item" ng-class="{'active': data.selectedTasklist=='trash'}" ng-click="data.selectedTasklist='trash'">
+                        <span>trash | <small>{{(tasks|filter:isTaskInTasklist('trash')).length}}</small></span>
+                    </a>
+
+                </div>
+
+                <div class="modal fade" id="{{tasklist.id}}" tabindex="-1" role="dialog" ng-repeat="tasklist in tasklists">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                <h4 class="modal-title">Edit tasklist</h4>
                             </div>
-
-                            <h5>{{tasklist.title}} <small>items: {{tasklist.tasks.length}}</small></h5>
-
-                            <div class="modal fade" id="{{tasklist.id}}" role="dialog">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                            <h4 class="modal-title">Rename tasklist</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" ng-model="data.tasklistNewTitle" placeholder="{{tasklist.title}}" autofocus>
-                                                    <span class="input-group-btn">
-                                                        <button type="submit" class="btn btn-default" data-dismiss="modal" ng-click="tasklistsPatchTitle(tasklist, data.tasklistNewTitle)">Rename</button>
-                                                    </span>
-                                                </div>
-                                            </form>
-                                        </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="tasklist-title" class="control-label">Title:</label>
+                                        <input type="text" class="form-control" id="tasklist-title" ng-model="tasklistNewTitle" ng-init="tasklistNewTitle=tasklist.title">
                                     </div>
-                                </div>
+                                </form>
                             </div>
-
-                        </li>
-                    </ul>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-danger" ng-click="tasklistsDelete(tasklist)" ng-if="tasklist.id!==defaultTasklistID">Delete</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-primary" ng-click="tasklistsPatchTitle(tasklist, tasklistNewTitle)">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <form ng-submit="tasklistsInsert(data.tasklistInput)">
@@ -106,32 +99,67 @@
 
             <div class="col-md-8">
 
-                <div class="list">
-                    <div ng-repeat="tasklist in tasklists" ng-if="tasklist.id==data.selectedTasklist.id || data.selectedTasklist=='all'">
-                        <div class="input-group" ng-repeat="task in tasklist.tasks | orderBy:'due'">
-                            <span class="input-group-addon">
-                                <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksUpdateStatus(task)">
-                            </span>
+                <div class="list-group">
 
-                            <input type="text" class="form-control" ng-model="task.title" ng-class="{'task-done': task.status == 'completed'}" ng-keyup="$event.keyCode == 13 && tasksUpdateName(task, $event)">
+                    <div class="list-group-item" ng-repeat="task in tasks | filter: isTaskInTasklist(data.selectedTasklist) | orderBy:'due'" ng-class="{'task-done': task.status == 'completed'}">
 
-                            <div class="input-group-btn">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{tasklist.title}}</button>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li ng-repeat="newtasklist in tasklists">
-                                            <a href="" ng-click="tasksUpdateTasklist(task, tasklist, newtasklist)">{{newtasklist.title}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <button class="btn btn-default" type="button" task-date>
-                                    <div ng-if="task.due">{{task.due | date:'fullDate':'+0'}}</div>
-                                    <div ng-if="!task.due"><span class="glyphicon glyphicon-calendar"></span></div>
-                                </button>
-                                <button class="btn btn-default" type="button" ng-click="tasksDelete(task)">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
+                        <input type="checkbox" ng-model="task.status" ng-true-value="'completed'" ng-false-value="'needsAction'" ng-change="tasksPatchStatus(task)">
+
+                        <span class="task-title">{{task.title}}</span>
+
+                        <span class="task-tasklist-title"><small>{{taskTasklist(task).title}}</small></span>
+
+                        <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#{{task.id}}">
+                            <span class="glyphicon glyphicon-option-vertical"></span>
+                        </button>
+
+                        <span class="task-due-date pull-right" ng-if="task.due"><small>{{task.due | date:'fullDate':'+0'}}</small></span>
+
+                    </div>
+
+                </div>
+
+                <div class="modal fade" id="{{task.id}}" tabindex="-1" role="dialog" ng-repeat="task in tasks">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                <h4 class="modal-title">Edit task</h4>
                             </div>
+
+                            <div class="modal-body">
+                                <form>
+
+                                    <div class="form-group">
+                                        <label for="task-title" class="control-label">Title:</label>
+                                        <input type="text" class="form-control" id="task-title" ng-model="taskNewTitle" ng-init="taskNewTitle=task.title">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="task-tasklist" class="control-label">Tasklist:</label>
+                                        <select class="form-control" id="task-tasklist" ng-model="taskNewTasklist" ng-init="taskNewTasklist=taskTasklist(task)" ng-options="tasklist as tasklist.title for tasklist in tasklists"></select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="task-notes" class="control-label">Notes:</label>
+                                        <textarea class="form-control" id="task-notes" ng-model="taskNewNotes" ng-init="taskNewNotes=task.notes"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="task-due-date" class="control-label">Due date:</label>
+                                        <input type="text" class="form-control" id="task-due-date" ng-model="taskNewDate" ng-init="taskNewDate=(task.due | date:'fullDate':'+0')" data-provide="datepicker" data-date-autoclose="true" data-date-today-highlight="true" data-date-clear-btn="true" data-date-format="DD, MM d, yyyy">
+                                    </div>
+
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-danger" ng-click="tasksDelete(task)">Delete</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-primary" ng-click="tasksPatch(task, taskNewTitle, taskNewTasklist, taskNewNotes, taskNewDate)">Save changes</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
