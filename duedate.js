@@ -274,3 +274,14 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
         });
     };
 });
+
+duedateApp.filter('fromNow', function() {
+    return function(dateString) {
+        var date = moment(moment.utc(dateString).format('YYYY-MM-DD'));
+        if (moment().diff(date, 'days') === 0) {
+            return 'today';
+        } else {
+            return moment(moment.utc(dateString).format('YYYY-MM-DD')).fromNow();
+        }
+    };
+});

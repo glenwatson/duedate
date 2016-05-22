@@ -16,6 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
     <script src="duedate.js"></script>
 
@@ -122,7 +123,7 @@
                             <span class="glyphicon glyphicon-option-vertical"></span>
                         </button>
 
-                        <span class="task-due-date pull-right" ng-if="task.due"><small>{{task.due | date:'fullDate':'+0'}}</small></span>
+                        <span class="task-due-date pull-right" ng-if="task.due"><small>{{task.due | fromNow}}</small></span>
 
                     </div>
 
