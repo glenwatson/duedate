@@ -277,11 +277,20 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
 
 duedateApp.filter('fromNow', function() {
     return function(dateString) {
+        var yesterday = moment().subtract(1, 'day');
+        var today = moment();
+        var tomorrow = moment().add(1, 'day');
+
         var date = moment(moment.utc(dateString).format('YYYY-MM-DD'));
-        if (moment().diff(date, 'days') === 0) {
+
+        if (date.isSame(yesterday, 'day')) {
+            return 'yesterday';
+        } else if (date.isSame(today, 'day')) {
             return 'today';
+        } else if (date.isSame(tomorrow, 'day')) {
+            return 'tomorrow';
         } else {
-            return moment(moment.utc(dateString).format('YYYY-MM-DD')).fromNow();
+            return date.fromNow();
         }
     };
 });
