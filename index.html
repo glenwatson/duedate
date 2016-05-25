@@ -123,7 +123,7 @@
                             <span class="glyphicon glyphicon-option-vertical"></span>
                         </button>
 
-                        <span class="task-due-date pull-right" ng-if="task.due"><small>{{task.due | fromNow}}</small></span>
+                        <span class="task-due-date pull-right" ng-if="task.due"><small title="{{task.due | date:'fullDate':'+0'}}">{{task.due | fromNow}}</small></span>
 
                     </div>
 
