@@ -4,7 +4,7 @@ var init = function() {
     window.checkAuth(true);
 };
 
-duedateApp.controller('tasklistCtrl', function ($scope, $window) {
+duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $window) {
     var CLIENT_ID = '954795491695-9pop5kva3tg9ontq87j2lg7oc0fgrv69.apps.googleusercontent.com';
     var SCOPE = 'https://www.googleapis.com/auth/tasks';
 
@@ -273,7 +273,7 @@ duedateApp.controller('tasklistCtrl', function ($scope, $window) {
             $scope.tasks.push(response.result);
         });
     };
-});
+}]);
 
 duedateApp.filter('fromNow', function() {
     return function(dateString) {
