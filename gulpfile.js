@@ -94,15 +94,15 @@ gulp.task('serve', ['default'], function(cb) {
     return runSequence(['connect', 'watch'], cb);
 });
 
+gulp.task('git-commit', function() {
+    return gulp.src('./package.json')
+    .pipe(git.commit('v'+duedateVersion));
+});
+
 gulp.task('git-tag', function() {
     return git.exec({args: 'tag v'+duedateVersion}, function (err) {
         if (err) throw err;
     });
-});
-
-gulp.task('git-commit', function() {
-    return gulp.src('./package.json')
-    .pipe(git.commit('v'+duedateVersion));
 });
 
 gulp.task('git-push', function() {
