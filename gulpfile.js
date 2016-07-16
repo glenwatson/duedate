@@ -104,6 +104,5 @@ gulp.task('release', ['default'], function(done) {
 });
 
 gulp.task('default', ['clean'], function(cb) {
-    console.log(githubToken);
     return runSequence(['html', 'fonts', 'styles', 'scripts'], cb);
 });
