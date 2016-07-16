@@ -116,10 +116,10 @@ gulp.task('deploy', function() {
     .pipe(ghPages({message: 'v'+duedateVersion}));
 });
 
-gulp.task('release', ['default'], function() {
-    return runSequence('git-commit', 'git-tag', 'git-push', 'deploy');
+gulp.task('release', ['default'], function(callback) {
+    runSequence('git-commit', 'git-tag', 'git-push', 'deploy', callback);
 });
 
-gulp.task('default', ['clean'], function() {
-    return runSequence(['html', 'fonts', 'styles', 'scripts']);
+gulp.task('default', ['clean'], function(callback) {
+    runSequence(['html', 'fonts', 'styles', 'scripts'], callback);
 });
