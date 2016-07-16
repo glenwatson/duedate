@@ -6,19 +6,26 @@ var del = require('del');
 var addsrc = require('gulp-add-src');
 var concat = require('gulp-concat');
 var runSequence = require('run-sequence');
+
+// serving
 var connect = require('gulp-connect');
-var ghPages = require('gulp-gh-pages');
+
+// releasing and deploying
 var git = require('gulp-git');
+var ghPages = require('gulp-gh-pages');
 var conventionalGithubReleaser = require('conventional-github-releaser');
 var duedateVersion = require('./package.json').version;
 var githubToken = require('./githubToken.json').token;
 
+// html preprocessing
 var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
 
+// css preprocessing
 var csslint = require('gulp-csslint');
 var cleanCSS = require('gulp-clean-css');
 
+// js preprocessing
 var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
 
