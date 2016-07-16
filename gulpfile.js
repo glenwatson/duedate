@@ -13,7 +13,6 @@ var connect = require('gulp-connect');
 // releasing and deploying
 var git = require('gulp-git');
 var ghPages = require('gulp-gh-pages');
-var conventionalGithubReleaser = require('conventional-github-releaser');
 var duedateVersion = require('./package.json').version;
 
 // html preprocessing
@@ -102,19 +101,9 @@ gulp.task('git-tag', function() {
 });
 
 gulp.task('git-push', function() {
-    return git.push('origin', 'master', function (err) {
+    return git.push('origin', 'master', {args: ' v'+duedateVersion}, function (err) {
         if (err) throw err;
     });
-});
-
-gulp.task('github-release', function(done) {
-    var githubToken = require('./githubToken.json').token;
-    return conventionalGithubReleaser({
-        type: "oauth",
-        token: githubToken
-    }, {
-        preset: 'angular'
-    }, done);
 });
 
 gulp.task('deploy', function() {
@@ -123,7 +112,7 @@ gulp.task('deploy', function() {
 });
 
 gulp.task('release', ['default'], function(cb) {
-    return runSequence(['git-tag', 'git-push', 'github-release', 'deploy']);
+    return runSequence(['git-tag', 'git-push', 'deploy']);
 });
 
 gulp.task('default', ['clean'], function(cb) {
