@@ -89,21 +89,34 @@ gulp.task('serve', ['default'], function(cb) {
     return runSequence(['connect', 'watch'], cb);
 });
 
-gulp.task('release', ['default'], function(done) {
-    git.tag('v'+duedateVersion, function (err) {
+gulp.task('git-tag', function() {
+    return git.tag('v'+duedateVersion, function (err) {
         if (err) throw err;
     });
-    git.push('origin', 'master', function (err) {
+});
+
+gulp.task('git-push', function() {
+    return git.push('origin', 'master', function (err) {
         if (err) throw err;
     });
-    conventionalGithubReleaser({
+});
+
+gulp.task('github-release', function(done) {
+    return conventionalGithubReleaser({
         type: "oauth",
         token: githubToken
     }, {
         preset: 'angular'
     }, done);
+});
+
+gulp.task('deploy', function() {
     return gulp.src('./dist/**/*')
     .pipe(ghPages());
+});
+
+gulp.task('release', ['default'], function(cb) {
+    return runSequence(['git-tag', 'git-push', 'github-release', 'deploy']);
 });
 
 gulp.task('default', ['clean'], function(cb) {
