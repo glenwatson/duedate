@@ -14,6 +14,7 @@ var duedateVersion = require('./package.json').version;
 var githubToken = require('./githubToken.json').token;
 
 var htmlmin = require('gulp-htmlmin');
+var replace = require('gulp-replace');
 
 var csslint = require('gulp-csslint');
 var cleanCSS = require('gulp-clean-css');
@@ -44,6 +45,7 @@ gulp.task('clean', function() {
 
 gulp.task('html', function() {
     return gulp.src('src/*.html')
+    .pipe(replace('DUEDATE_VERSION', duedateVersion))
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('dist'))
 });
