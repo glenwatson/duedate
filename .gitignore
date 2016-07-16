@@ -1,5 +1,6 @@
 *.swp
 githubToken.json
+.publish/
 dist/
 bower_components/
 node_modules/
