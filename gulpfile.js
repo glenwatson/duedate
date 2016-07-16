@@ -95,7 +95,7 @@ gulp.task('serve', ['default'], function(cb) {
 });
 
 gulp.task('git-tag', function() {
-    return git.tag('v'+duedateVersion, function (err) {
+    return git.exec({args: 'tag v'+duedateVersion}, function (err) {
         if (err) throw err;
     });
 });
