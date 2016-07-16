@@ -15,7 +15,6 @@ var git = require('gulp-git');
 var ghPages = require('gulp-gh-pages');
 var conventionalGithubReleaser = require('conventional-github-releaser');
 var duedateVersion = require('./package.json').version;
-var githubToken = require('./githubToken.json').token;
 
 // html preprocessing
 var htmlmin = require('gulp-htmlmin');
@@ -109,6 +108,7 @@ gulp.task('git-push', function() {
 });
 
 gulp.task('github-release', function(done) {
+    var githubToken = require('./githubToken.json').token;
     return conventionalGithubReleaser({
         type: "oauth",
         token: githubToken
