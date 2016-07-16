@@ -93,6 +93,9 @@ gulp.task('release', ['default'], function(done) {
     git.tag('v'+duedateVersion, function (err) {
         if (err) throw err;
     });
+    git.push('origin', 'master', function (err) {
+        if (err) throw err;
+    });
     conventionalGithubReleaser({
         type: "oauth",
         token: githubToken
