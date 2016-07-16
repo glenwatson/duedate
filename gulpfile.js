@@ -117,7 +117,7 @@ gulp.task('deploy', function() {
 });
 
 gulp.task('release', ['default'], function(cb) {
-    return runSequence(['git-tag', 'git-commit', 'git-push', 'deploy']);
+    return runSequence(['git-commit', 'git-tag', 'git-push', 'deploy']);
 });
 
 gulp.task('default', ['clean'], function(cb) {
