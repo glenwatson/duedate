@@ -1,6 +1,6 @@
 {
   "name": "duedate",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "devDependencies": {
     "del": "^2.2.1",
     "gulp": "^3.9.1",
