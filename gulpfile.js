@@ -7,6 +7,11 @@ var addsrc = require('gulp-add-src');
 var concat = require('gulp-concat');
 var runSequence = require('run-sequence');
 var connect = require('gulp-connect');
+var ghPages = require('gulp-gh-pages');
+var git = require('gulp-git');
+var conventionalGithubReleaser = require('conventional-github-releaser');
+var duedateVersion = require('./package.json').version;
+var githubToken = require('./githubToken.json').token;
 
 var htmlmin = require('gulp-htmlmin');
 
@@ -82,6 +87,21 @@ gulp.task('serve', ['default'], function(cb) {
     return runSequence(['connect', 'watch'], cb);
 });
 
+gulp.task('release', ['default'], function(done) {
+    git.tag('v'+duedateVersion, function (err) {
+        if (err) throw err;
+    });
+    conventionalGithubReleaser({
+        type: "oauth",
+        token: githubToken
+    }, {
+        preset: 'angular'
+    }, done);
+    return gulp.src('./dist/**/*')
+    .pipe(ghPages());
+});
+
 gulp.task('default', ['clean'], function(cb) {
+    console.log(githubToken);
     return runSequence(['html', 'fonts', 'styles', 'scripts'], cb);
 });
