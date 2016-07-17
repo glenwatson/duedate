@@ -48,6 +48,11 @@ gulp.task('clean', function() {
     return del(['dist']);
 });
 
+gulp.task('copy', function() {
+    return gulp.src('assets/**')
+    .pipe(gulp.dest('dist'));
+});
+
 gulp.task('html', function() {
     return gulp.src('src/*.html')
     .pipe(replace('DUEDATE_VERSION', duedateVersion))
@@ -121,5 +126,5 @@ gulp.task('release', ['default'], function(callback) {
 });
 
 gulp.task('default', ['clean'], function(callback) {
-    runSequence(['html', 'fonts', 'styles', 'scripts'], callback);
+    runSequence(['copy', 'html', 'fonts', 'styles', 'scripts'], callback);
 });
