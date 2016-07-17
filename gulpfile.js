@@ -13,7 +13,7 @@ var connect = require('gulp-connect');
 // releasing and deploying
 var git = require('gulp-git');
 var ghPages = require('gulp-gh-pages');
-var duedateVersion = require('./package.json').version;
+var duedateVersion = 'v'+require('./package.json').version;
 
 // html preprocessing
 var htmlmin = require('gulp-htmlmin');
@@ -96,7 +96,7 @@ gulp.task('serve', ['default'], function(cb) {
 
 gulp.task('git-commit', function() {
     return gulp.src('./package.json')
-    .pipe(git.commit('v'+duedateVersion));
+    .pipe(git.commit(duedateVersion));
 });
 
 gulp.task('git-tag', function() {
@@ -106,14 +106,14 @@ gulp.task('git-tag', function() {
 });
 
 gulp.task('git-push', function() {
-    return git.push('origin', 'master', {args: ' v'+duedateVersion}, function (err) {
+    return git.push('origin', 'master', {args: duedateVersion}, function (err) {
         if (err) throw err;
     });
 });
 
 gulp.task('deploy', function() {
     return gulp.src('./dist/**/*')
-    .pipe(ghPages({message: 'v'+duedateVersion}));
+    .pipe(ghPages({message: duedateVersion}));
 });
 
 gulp.task('release', ['default'], function(callback) {
