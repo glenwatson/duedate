@@ -100,7 +100,7 @@ gulp.task('git-commit', function() {
 });
 
 gulp.task('git-tag', function() {
-    return git.exec({args: 'tag v'+duedateVersion}, function (err) {
+    return git.tag(duedateVersion, duedateVersion, function (err) {
         if (err) throw err;
     });
 });
