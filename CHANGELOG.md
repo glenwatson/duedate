@@ -1,7 +1,9 @@
 # duedate changelog
 
 ## Next release
-- Added changelog to the project.
+### Added
+- Changelog to the project.
+- Simple favicon.
 
 ## 0.2.1-0.2.9 (2016-07-16)
 - Modified and decided the release method.
