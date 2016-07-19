@@ -1,5 +1,9 @@
 # duedate changelog
 
+## 0.3.2 (2016-07-19)
+### Fixed
+- Fetching of favicon by adding link in head.
+
 ## 0.3.1 (2016-07-19)
 ### Fixed
 - Absolute paths aren't found since website is hosted in subdirectory.
