@@ -1,6 +1,6 @@
 # duedate changelog
 
-## Next release
+## 0.3.0 (2016-07-19)
 ### Added
 - Changelog to the project.
 - Simple favicon.
