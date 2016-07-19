@@ -2,6 +2,33 @@
   "name": "duedate",
   "version": "0.2.9",
   "devDependencies": {
+    "clean-css": "^3.4.18",
+    "csslint": "^1.0.1",
+    "html-minifier": "^3.0.1",
+    "http-server": "^0.9.0",
     "jshint": "^2.9.2",
+    "onchange": "^2.5.0",
+    "uglify-js": "^2.7.0"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean && mkdir dist",
+    "build": "npm run assets & npm run html & npm run css & npm run js",
+    "watch": "npm run watch:assets & npm run watch:html & npm run watch:css & npm run watch:js",
+    "watch:assets": "onchange assets/ bower_components/ -- npm run assets",
+    "watch:html": "onchange src/index.html -- npm run html",
+    "watch:css": "onchange src/css/ -- npm run css",
+    "watch:js": "onchange src/js/ -- npm run js",
+    "serve": "npm run build && (npm run watch & http-server dist)",
+    "assets": "cp -r assets/* dist/ && cp -r bower_components dist/",
+    "html": "npm run html:minify && npm run html:replace",
+    "html:minify": "html-minifier --collapse-whitespace src/index.html -o dist/index.html",
+    "html:replace": "sed -i \"s/DUEDATE_VERSION/v$npm_package_version/g\" dist/index.html",
+    "css": "npm run css:lint && npm run css:minify",
+    "css:lint": "csslint src/css/*",
+    "css:minify": "cleancss -o dist/duedate.min.css src/css/*",
+    "js": "npm run js:lint && npm run js:minify",
+    "js:lint": "jshint src/js/*",
+    "js:minify": "uglifyjs src/js/* -o dist/duedate.min.js"
   }
 }
