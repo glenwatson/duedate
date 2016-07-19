@@ -21,6 +21,7 @@
     "watch:css": "onchange src/css/ -- npm run css",
     "watch:js": "onchange src/js/ -- npm run js",
     "serve": "npm run build && (npm run watch & http-server dist)",
+    "preversion": "git add .",
     "deploy": "gh-pages -d dist -m $npm_package_version",
     "assets": "cp -r assets/* dist/ && cp -r bower_components dist/",
     "html": "npm run html:minify && npm run html:replace",
