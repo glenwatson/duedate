@@ -4,6 +4,8 @@
 ### Added
 - Changelog to the project.
 - Simple favicon.
+### Changed
+- To using npm scripts instead of gulp to manage the build.
 
 ## 0.2.1-0.2.9 (2016-07-16)
 - Modified and decided the release method.
