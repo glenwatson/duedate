@@ -20,4 +20,4 @@ To use the app, simply visit the website, log in to Google and accept the app's 
     $ git clone https://github.com/fbergin/duedate.git
     $ npm install
     $ bower install
-    $ gulp serve
+    $ npm run serve
