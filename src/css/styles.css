@@ -1,9 +1,9 @@
 .glyphicon-refresh {
-    font-size: 2em;
     -animation: spin .7s infinite linear;
     -ms-animation: spin .7s infinite linear;
     -webkit-animation: spinw .7s infinite linear;
     -moz-animation: spinm .7s infinite linear;
+    font-size: 2em;
 }
 
 @keyframes spin {
@@ -59,8 +59,8 @@
 }
 
 .footer {
-    padding-top: 15px;
-    margin: 20px 0 40px;
-    text-align: center;
     border-top: 1px solid #e5e5e5;
+    margin: 20px 0 40px;
+    padding-top: 15px;
+    text-align: center;
 }
