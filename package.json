@@ -1,6 +1,6 @@
 {
   "name": "duedate",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "devDependencies": {
     "clean-css": "^3.4.18",
     "csslint": "^1.0.1",
