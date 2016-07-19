@@ -1,5 +1,4 @@
 *.swp
-.publish/
 dist/
 bower_components/
 node_modules/
