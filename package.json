@@ -4,6 +4,7 @@
   "devDependencies": {
     "clean-css": "^3.4.18",
     "csslint": "^1.0.1",
+    "gh-pages": "^0.11.0",
     "html-minifier": "^3.0.1",
     "http-server": "^0.9.0",
     "jshint": "^2.9.2",
@@ -20,6 +21,7 @@
     "watch:css": "onchange src/css/ -- npm run css",
     "watch:js": "onchange src/js/ -- npm run js",
     "serve": "npm run build && (npm run watch & http-server dist)",
+    "deploy": "gh-pages -d dist -m $npm_package_version",
     "assets": "cp -r assets/* dist/ && cp -r bower_components dist/",
     "html": "npm run html:minify && npm run html:replace",
     "html:minify": "html-minifier --collapse-whitespace src/index.html -o dist/index.html",
