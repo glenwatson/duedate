@@ -1,6 +1,10 @@
 {
   "name": "duedate",
   "version": "0.3.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fbergin/duedate"
+  },
   "devDependencies": {
     "clean-css": "^3.4.18",
     "csslint": "^1.0.1",
@@ -33,5 +37,6 @@
     "js": "npm run js:lint && npm run js:minify",
     "js:lint": "jshint src/js/*",
     "js:minify": "uglifyjs src/js/* -o dist/duedate.min.js"
-  }
+  },
+  "license": "MIT"
 }
