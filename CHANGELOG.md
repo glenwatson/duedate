@@ -1,5 +1,9 @@
 # duedate changelog
 
+## Next release
+### Added
+- Icon in site header.
+
 ## 0.3.2 (2016-07-19)
 ### Fixed
 - Fetching of favicon by adding link in head.

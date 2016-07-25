@@ -30,7 +30,7 @@
     "assets": "cp -r assets/* dist/ && cp -r bower_components dist/",
     "html": "npm run html:minify && npm run html:replace",
     "html:minify": "html-minifier --collapse-whitespace src/index.html -o dist/index.html",
-    "html:replace": "sed -i \"s/DUEDATE_VERSION/v$npm_package_version/g\" dist/index.html",
+    "html:replace": "sed -i.bak \"s/DUEDATE_VERSION/v$npm_package_version/g\" dist/index.html && rm dist/index.html.bak",
     "css": "npm run css:lint && npm run css:minify",
     "css:lint": "csslint src/css/*",
     "css:minify": "cleancss -o dist/duedate.min.css src/css/*",
