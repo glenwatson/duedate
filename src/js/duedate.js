@@ -21,7 +21,7 @@ duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $w
     var handleAuthResult = function(authResult) {
         if (authResult && !authResult.error) {
             $scope.authenticated = true;
-            $window.gapi.client.load('tasks', 'v1', postInitiation);
+            $window.gapi.client.load('tasks', 'v1', $scope.refreshData);
         } else {
             $scope.authenticated = false;
         }
@@ -32,7 +32,9 @@ duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $w
     }, 500);
 
     $scope.tasklists = [];
+    $scope.tasklistsTmp = [];
     $scope.tasks = [];
+    $scope.tasksTmp = [];
     $scope.defaultTasklistID = null;
 
     function tasksList(tasklist, pageToken) {
@@ -40,7 +42,7 @@ duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $w
         $window.gapi.client.tasks.tasks.list(parameters).then(function(response) {
             if ('items' in response.result) {
                 response.result.items.forEach(function(element) {
-                    $scope.tasks.push(element);
+                    $scope.tasksTmp.push(element);
                 });
             }
             if ('nextPageToken' in response.result) {
@@ -53,18 +55,23 @@ duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $w
         var parameters = {pageToken: pageToken};
         $window.gapi.client.tasks.tasklists.list(parameters).then(function(response) {
             response.result.items.forEach(function(element) {
-                $scope.tasklists.push(element);
+                $scope.tasklistsTmp.push(element);
                 tasksList(element, null);
             });
             if ('nextPageToken' in response.result) {
                 tasklistsList(response.result.nextPageToken);
+            } else {
+                $scope.tasklists = $scope.tasklistsTmp;
+                $scope.tasks = $scope.tasksTmp;
             }
         });
     }
 
-    var postInitiation = function() {
+    $scope.refreshData = function() {
         $window.gapi.client.tasks.tasklists.get({tasklist: '@default'}).then(function(response) {
             $scope.defaultTasklistID = response.result.id;
+            $scope.tasklistsTmp = [];
+            $scope.tasksTmp = [];
             tasklistsList(null);
         });
     };

@@ -3,6 +3,7 @@
 ## Next release
 ### Added
 - Icon in site header.
+- Refresh button.
 
 ## 0.3.2 (2016-07-19)
 ### Fixed
