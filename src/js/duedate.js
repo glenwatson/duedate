@@ -4,7 +4,7 @@ var init = function() {
     window.checkAuth(true);
 };
 
-duedateApp.controller('tasklistCtrl', ['$interval', '$scope', '$window', function ($interval, $scope, $window) {
+duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $window) {
     var CLIENT_ID = '954795491695-9pop5kva3tg9ontq87j2lg7oc0fgrv69.apps.googleusercontent.com';
     var SCOPE = 'https://www.googleapis.com/auth/tasks';
 
@@ -70,14 +70,9 @@ duedateApp.controller('tasklistCtrl', ['$interval', '$scope', '$window', functio
     var postInitiation = function() {
         $window.gapi.client.tasks.tasklists.get({tasklist: '@default'}).then(function(response) {
             $scope.defaultTasklistID = response.result.id;
-            var refreshData = function() {
-                $scope.tasklistsTmp = [];
-                $scope.tasksTmp = [];
-                tasklistsList(null);
-                console.log('going at it');
-            };
-            refreshData();
-            $interval(refreshData, 60000);
+            $scope.tasklistsTmp = [];
+            $scope.tasksTmp = [];
+            tasklistsList(null);
         });
     };
 
