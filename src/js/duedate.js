@@ -21,7 +21,7 @@ duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $w
     var handleAuthResult = function(authResult) {
         if (authResult && !authResult.error) {
             $scope.authenticated = true;
-            $window.gapi.client.load('tasks', 'v1', postInitiation);
+            $window.gapi.client.load('tasks', 'v1', $scope.refreshData);
         } else {
             $scope.authenticated = false;
         }
@@ -67,7 +67,7 @@ duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $w
         });
     }
 
-    var postInitiation = function() {
+    $scope.refreshData = function() {
         $window.gapi.client.tasks.tasklists.get({tasklist: '@default'}).then(function(response) {
             $scope.defaultTasklistID = response.result.id;
             $scope.tasklistsTmp = [];
