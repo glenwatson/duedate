@@ -1,6 +1,6 @@
 # duedate changelog
 
-## Next release
+## 0.4.0 (2016-07-25)
 ### Added
 - Icon in site header.
 - Refresh button.
