@@ -33,6 +33,10 @@
     }
 }
 
+.task-overdue {
+    background-color: red;
+}
+
 .fa-calendar-check-o {
     color: #0088CC;
 }
