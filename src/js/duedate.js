@@ -10,6 +10,10 @@ duedateApp.controller('tasklistCtrl', ['$scope', '$window', function ($scope, $w
 
     $scope.authenticated = undefined;
 
+    $scope.isOverdue = function(task) {
+        return !task.completed && moment(task.due).isBefore(moment());
+    };
+
     $scope.checkAuth = $window.checkAuth = function(immediate) {
         $window.gapi.auth.authorize({
             client_id: CLIENT_ID,
